@@ -4126,9 +4126,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ultimate-react/fast-react-pizza@workspace:projects/16-fast-react-pizza":
+"@ultimate-react/fast-react-pizza@workspace:projects/15-fast-react-pizza":
   version: 0.0.0-use.local
-  resolution: "@ultimate-react/fast-react-pizza@workspace:projects/16-fast-react-pizza"
+  resolution: "@ultimate-react/fast-react-pizza@workspace:projects/15-fast-react-pizza"
   dependencies:
     "@radix-ui/react-slot": "npm:^1.1.0"
     "@reduxjs/toolkit": "npm:^2.2.7"
@@ -4165,9 +4165,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ultimate-react/redux-intro@workspace:projects/15-redux-intro":
+"@ultimate-react/redux-intro@workspace:projects/14-redux-intro":
   version: 0.0.0-use.local
-  resolution: "@ultimate-react/redux-intro@workspace:projects/15-redux-intro"
+  resolution: "@ultimate-react/redux-intro@workspace:projects/14-redux-intro"
   dependencies:
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
