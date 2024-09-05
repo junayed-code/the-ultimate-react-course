@@ -4224,6 +4224,7 @@ __metadata:
     react-router-dom: "npm:^6.26.0"
     typescript: "npm:^5.5.3"
     vite: "npm:^5.4.0"
+    vite-tsconfig-paths: "npm:^5.0.1"
   languageName: unknown
   linkType: soft
 
