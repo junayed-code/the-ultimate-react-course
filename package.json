@@ -1,0 +1,34 @@
+{
+  "name": "ultimate-react",
+  "private": true,
+  "type": "module",
+  "description": "A mono-repo of the ultimate-react course author by Jonas Schmedtmann on Udemy",
+  "author": {
+    "name": "Junayed Akbor",
+    "email": "junayedakbour@gmail.com",
+    "url": "https://junayedakbor.vercel.app"
+  },
+  "workspaces": [
+    "packages/*",
+    "projects/*"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^22.3.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.1.0"
+  },
+  "dependenciesMeta": {
+    "prettier-plugin-tailwindcss@0.6.6": {
+      "unplugged": true
+    }
+  },
+  "packageManager": "yarn@4.4.1"
+}
