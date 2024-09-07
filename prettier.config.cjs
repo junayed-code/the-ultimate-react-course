@@ -6,10 +6,16 @@ const config = {
 
   overrides: [
     {
-      files: ["**/projects/16-fast-react-pizza/**"],
+      files: ["**/projects/15-fast-react-pizza/**"],
       options: {
         singleQuote: true,
         plugins: [require.resolve("prettier-plugin-tailwindcss")],
+      },
+    },
+    {
+      files: ["**/projects/16-the-wild-oasis/**"],
+      options: {
+        singleQuote: true,
       },
     },
   ],
