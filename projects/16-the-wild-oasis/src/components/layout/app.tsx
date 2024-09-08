@@ -37,6 +37,7 @@ const Sidebar = styled.aside`
 
 const Main = styled.main`
   padding-left: var(--padding-left);
+  overflow-x: auto;
 `;
 
 const LayoutRoot = styled.div`

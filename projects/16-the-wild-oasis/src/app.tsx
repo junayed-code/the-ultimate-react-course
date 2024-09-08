@@ -3,6 +3,7 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 import Users from '@pages/users';
 import Login from '@pages/login';
@@ -37,6 +38,19 @@ function App() {
     <>
       <GlobalStyles />
       <RouterProvider router={router} />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          success: { duration: 3000 },
+          error: { duration: 5000 },
+          style: {
+            fontWeight: 500,
+            fontSize: '.875rem',
+            color: 'var(--color-grey-700)',
+            backgroundColor: 'var(--color-grey)',
+          },
+        }}
+      />
     </>
   );
 }
