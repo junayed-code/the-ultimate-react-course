@@ -37,8 +37,8 @@ const variants = {
 };
 
 type ButtonProps = {
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'primary' | 'secondary' | 'danger';
+  $size?: 'sm' | 'md' | 'lg';
+  $variant?: 'primary' | 'secondary' | 'danger';
 };
 
 const Button = styled.button<ButtonProps>`
@@ -53,17 +53,15 @@ const Button = styled.button<ButtonProps>`
     transform 200ms ease-in-out,
     background-color 300ms ease-in-out;
 
-  &:hover {
+  &:enabled:hover {
     background-color: var(--color-hover);
   }
-  &:active {
+  &:enabled:active {
     transform: scale(0.95);
   }
 
-  ${({ size = 'md' }) => sizes[size]}
-  ${({ variant = 'primary' }) => variants[variant]}
+  ${({ $size = 'md' }) => sizes[$size]}
+  ${({ $variant = 'primary' }) => variants[$variant]}
 `;
 
 export default Button;
-
-// export { sizes, variations };
