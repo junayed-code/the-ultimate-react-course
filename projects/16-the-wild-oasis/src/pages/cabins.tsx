@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 import Row from '@ui/row';
+import Button from '@ui/button';
 import CabinTable from '@features/cabins/table';
+import CreateCabinForm from '@features/cabins/create-form';
 
 const Container = styled.div`
   width: 58rem;
@@ -14,11 +16,16 @@ const Container = styled.div`
 function Cabins() {
   return (
     <Container>
-      <Row $direction="horizontal">
+      <Row $direction="horizontal" $justify="between">
         <h3>All cabins</h3>
-        <p>Filter/Sort</p>
+        <Row $direction="horizontal" $gap="1rem">
+          <p>Filter/Sort</p>
+          <Button>Add Cabin</Button>
+        </Row>
       </Row>
+
       <CabinTable />
+      <CreateCabinForm />
     </Container>
   );
 }

@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Formik, Form, ErrorMessage, useField } from 'formik';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldConfig,
+  useFormikContext,
+} from 'formik';
 
 import Row from '@ui/row';
 
@@ -33,23 +40,24 @@ const FormGroup = ({ name, ...props }: FormGroupProps) => {
   );
 };
 
-type FormFieldProps = { children: React.ReactElement };
+type FormFieldProps = Omit<FieldConfig, 'name' | 'type'> &
+  React.InputHTMLAttributes<HTMLInputElement>;
 
-const FormField = ({ children }: FormFieldProps) => {
+const FormField = (props: FormFieldProps) => {
   const { id, name } = useFormGroup();
-  const [field, , helpers] = useField(name);
+  const { setFieldValue, setFieldTouched } = useFormikContext();
+  const fieldProps: typeof props = { ...props, id, name };
 
-  if (children.props.type === 'file') {
-    field.value = undefined;
-    field.onBlur = () => void 0;
-    field.onChange = function (e: React.ChangeEvent<HTMLInputElement>) {
-      helpers.setTouched(true);
-      helpers.setValue(e.target.files?.[0]);
+  if (props.type === 'file') {
+    fieldProps.value = undefined;
+    fieldProps.onBlur = undefined;
+    fieldProps.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFieldTouched(name, true);
+      setFieldValue(name, e.target.files?.[0]);
     };
   }
 
-  const props = { ...children.props, ...field, id };
-  return React.cloneElement(children, props);
+  return <Field {...fieldProps} />;
 };
 
 const FormLabel = (
