@@ -19,8 +19,9 @@ export const cabinsFetcher = async () => {
 };
 
 export const createCabin = async (_: string, { arg }: { arg: CabinInsert }) => {
-  const { randomName } = parseFile(arg.image);
-  const image = `${IMAGE_BASE_URL}/${randomName}`;
+  const { image: ImageFile } = arg;
+  const { randomName: imageName } = parseFile(ImageFile);
+  const image = `${IMAGE_BASE_URL}/${imageName}`;
 
   // Create a new cabin with the cabin image file URL
   const cabin = CreateCabinSchema.cast({ ...arg, image });
@@ -34,7 +35,7 @@ export const createCabin = async (_: string, { arg }: { arg: CabinInsert }) => {
   // Upload the cabin image
   const { error: imageUploadError } = await supabase.storage
     .from('cabins')
-    .upload(randomName, image);
+    .upload(imageName, ImageFile);
 
   // If cabin image cannot upload then delete the cabin
   if (imageUploadError) {
