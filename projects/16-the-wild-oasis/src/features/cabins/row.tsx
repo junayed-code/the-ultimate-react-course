@@ -1,18 +1,18 @@
+import { mutate } from 'swr';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
-import { mutate } from 'swr';
-import { HiPencil, HiTrash } from 'react-icons/hi2';
+import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
 
 import Button from '@components/ui/button';
 import UpdateCabinForm from '@features/cabins/update-form';
 import { Tables } from '@services/supabase/database.types';
 import { formatCurrency } from '@utils/helpers';
-import { deleteCabin } from '@services/api/cabins';
-import { useState } from 'react';
+import { createCabin, deleteCabin } from '@services/api/cabins';
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  grid-template-columns: 0.6fr 1.4fr 2.2fr 1fr 1fr 1.4fr;
   column-gap: 1.25rem;
   align-items: center;
   padding: 0.875rem 1.25rem;
@@ -49,8 +49,11 @@ const Discount = styled.div`
 `;
 
 const TableRowAction = styled.div`
-  & > button:nth-child(odd) {
+  & > button {
     margin-right: 0.5rem;
+    &:last-child {
+      margin-right: 0;
+    }
   }
 `;
 
@@ -59,6 +62,20 @@ type CabinRowProps = { cabin: Tables<'cabins'> };
 function CabinRow({ cabin }: CabinRowProps) {
   const [showForm, setShowForm] = useState(false);
   const { name, capacity, image, price, discount } = cabin;
+
+  const handleDuplicateCabin = async () => {
+    try {
+      const id = Math.ceil(Math.random() * cabin.id);
+      const arg = { ...cabin, name: `${name} Copy`, id };
+      await mutate('cabins', createCabin('', { arg }), {
+        populateCache: false,
+        optimisticData: current => [...current, arg],
+      });
+      toast.success('The cabin successfully copied');
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
 
   const handleDeleteCabin = async () => {
     try {
@@ -69,7 +86,7 @@ function CabinRow({ cabin }: CabinRowProps) {
       });
       toast.success('Cabin successfully deleted');
     } catch (error) {
-      return toast.error((error as Error).message);
+      toast.error((error as Error).message);
     }
   };
 
@@ -82,6 +99,13 @@ function CabinRow({ cabin }: CabinRowProps) {
         <Price>{formatCurrency(price)}</Price>
         <Discount>{formatCurrency(discount || 0)}</Discount>
         <TableRowAction>
+          <Button
+            $size="icon"
+            $variant="secondary"
+            onClick={handleDuplicateCabin}
+          >
+            <HiSquare2Stack />
+          </Button>
           <Button $size="icon" onClick={() => setShowForm(show => !show)}>
             <HiPencil />
           </Button>

@@ -5,13 +5,13 @@ import { TablesInsert, TablesUpdate } from '@services/supabase/database.types';
 
 const IMAGE_BASE_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/cabins`;
 
-const db = supabase.from('cabins');
-const storage = supabase.storage.from('cabins');
+const db = () => supabase.from('cabins');
+const storage = () => supabase.storage.from('cabins');
 
 export type CabinInsert = Omit<
   TablesInsert<'cabins'>,
   'id' | 'created_at' | 'image'
-> & { image: File };
+> & { image: File | string };
 
 export type CabinUpdate = Omit<TablesUpdate<'cabins'>, 'image'> & {
   id: number;
@@ -25,26 +25,29 @@ export const cabinsFetcher = async () => {
 };
 
 export const createCabin = async (_: string, { arg }: { arg: CabinInsert }) => {
-  const { image: ImageFile } = arg;
-  const { randomName: imageName } = parseFile(ImageFile);
-  const image = `${IMAGE_BASE_URL}/${imageName}`;
+  let imagePath: string = '';
+  const { image } = arg;
+
+  const isImageFile = typeof image !== 'string' && image instanceof File;
+  if (isImageFile) {
+    imagePath = parseFile(image).randomName;
+    arg.image = `${IMAGE_BASE_URL}/${imagePath}`;
+  }
 
   // Create a new cabin with the cabin image file URL
-  const cabin = CreateCabinSchema.cast({ ...arg, image });
-  const { data, error } = await db.insert(cabin).select().single();
+  const cabin = CreateCabinSchema.cast(arg, { stripUnknown: true });
+  const { data, error } = await db().insert(cabin).select().single();
   if (error) {
     console.error(error);
     throw new Error('Cabin could not be created');
   }
 
-  // Upload the cabin image
-  const { error: imageUploadError } = await uploadCabinImage(
-    imageName,
-    ImageFile,
-  );
+  if (!isImageFile || !imagePath) return data;
 
+  // Upload the cabin image
+  const { error: uploadError } = await uploadCabinImage(imagePath, image);
   // If cabin image cannot upload then delete the cabin
-  if (imageUploadError) {
+  if (uploadError) {
     await deleteCabin(data.id);
     throw new Error("Cabin image could not uploaded so cabin wasn't created");
   }
@@ -69,7 +72,11 @@ export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
 
   const values = { ...rest, image: image.path };
   const cabin = UpdateCabinSchema.cast(values, { stripUnknown: true });
-  const { data, error } = await db.update(cabin).eq('id', id).select().single();
+  const { data, error } = await db()
+    .update(cabin)
+    .eq('id', id)
+    .select()
+    .single();
 
   if (error) {
     console.error(error);
@@ -80,7 +87,8 @@ export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
 };
 
 export const deleteCabin = async (id: number) => {
-  const { data, error } = await db.delete().eq('id', id).select().single();
+  const { data, error } = await db().delete().eq('id', id).select().single();
+
   if (error) {
     console.error(error);
     throw new Error('Cabin could not be deleted');
@@ -95,13 +103,13 @@ export const deleteCabin = async (id: number) => {
 };
 
 const uploadCabinImage = (path: string, file: File) => {
-  return storage.upload(path, file);
+  return storage().upload(path, file);
 };
 
 const updateCabinImage = (path: string, file: File) => {
-  return storage.update(path, file);
+  return storage().update(path, file);
 };
 
 const deleteCabinImages = (...paths: string[]) => {
-  return storage.remove(paths);
+  return storage().remove(paths);
 };
