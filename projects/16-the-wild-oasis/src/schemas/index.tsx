@@ -13,7 +13,9 @@ export const CreateCabinSchema = object().shape({
     .required('Maximum capacity is a required field'),
   price: number().min(1).required('Price is a required field'),
   discount: number()
-    .positive('Discount must be a positive number')
+    .min(0)
     .transform((value, original) => (original === '' ? 0 : value))
     .lessThan(ref('price'), 'Discount must be less than the regular price'),
 });
+
+export const UpdateCabinSchema = CreateCabinSchema.shape({});
