@@ -34,13 +34,7 @@ function UpdateCabinForm({ initialValues, onUpdate }: CabinUpdateFormProps) {
     onError: error => toast.error(error.message),
   });
 
-  const handleSubmit = (values: UpdateCabinValues) => {
-    const image = {
-      path: initialValues.image as string,
-      file: typeof values.image !== 'string' ? values.image : undefined,
-    };
-    trigger({ ...values, image });
-  };
+  const handleSubmit = (values: UpdateCabinValues) => trigger(values);
 
   return (
     <StyledCabinForm

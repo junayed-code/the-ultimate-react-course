@@ -15,7 +15,7 @@ export type CabinInsert = Omit<
 
 export type CabinUpdate = Omit<TablesUpdate<'cabins'>, 'image'> & {
   id: number;
-  image: { path: string; file?: File };
+  image: File | string;
 };
 
 export const cabinsFetcher = async () => {
@@ -56,11 +56,13 @@ export const createCabin = async (_: string, { arg }: { arg: CabinInsert }) => {
 };
 
 export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
-  const { id, image, ...rest } = arg;
+  const { id, image } = arg;
+  const isImageFile = typeof image !== 'string' && image instanceof File;
 
-  if (image.file !== undefined) {
-    const path = image.path.split('/').pop() as string;
-    const { error } = await updateCabinImage(path, image.file);
+  if (isImageFile) {
+    const path = parseFile(image).randomName;
+    arg.image = `${IMAGE_BASE_URL}/${path}`;
+    const { error } = await uploadCabinImage(path, image);
 
     if (error) {
       console.error(error);
@@ -70,8 +72,7 @@ export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
     }
   }
 
-  const values = { ...rest, image: image.path };
-  const cabin = UpdateCabinSchema.cast(values, { stripUnknown: true });
+  const cabin = UpdateCabinSchema.cast(arg, { stripUnknown: true });
   const { data, error } = await db()
     .update(cabin)
     .eq('id', id)
@@ -104,10 +105,6 @@ export const deleteCabin = async (id: number) => {
 
 const uploadCabinImage = (path: string, file: File) => {
   return storage().upload(path, file);
-};
-
-const updateCabinImage = (path: string, file: File) => {
-  return storage().update(path, file);
 };
 
 const deleteCabinImages = (...paths: string[]) => {
