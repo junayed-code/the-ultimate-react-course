@@ -2,6 +2,8 @@ import toast from 'react-hot-toast';
 import useSWRMutation from 'swr/mutation';
 import { type FormikHelpers } from 'formik';
 
+import Row from '@ui/row';
+import Button from '@ui/button';
 import CabinForm from '@components/cabin-form';
 import { CreateCabinSchema } from '@/schemas';
 import { createCabin, CabinInsert } from '@services/api/cabins';
@@ -17,7 +19,7 @@ const initialValues: Record<keyof CabinInsert, any> = {
 };
 
 function CreateCabinForm() {
-  const { trigger } = useSWRMutation('cabins', createCabin);
+  const { trigger, isMutating } = useSWRMutation('cabins', createCabin);
 
   const handleSubmit = async <Values extends CabinInsert>(
     values: Values,
@@ -37,7 +39,16 @@ function CreateCabinForm() {
       onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={CreateCabinSchema}
-    />
+    >
+      <Row $direction="horizontal" $justify="end" $gap="1rem">
+        <Button $variant="secondary" type="reset">
+          Reset
+        </Button>
+        <Button type="submit" disabled={isMutating}>
+          Create Cabin
+        </Button>
+      </Row>
+    </CabinForm>
   );
 }
 

@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import { Formik, Form, FormikConfig, FormikValues } from 'formik';
 
-import Row from '@ui/row';
 import Input from '@ui/input';
-import Button from '@ui/button';
 import { FormGroup, FormField, FormLabel, FormMessage } from '@ui/form';
 
 const StyledForm = styled(Form)`
@@ -16,15 +14,15 @@ const Textarea = styled(Input).attrs({ as: 'textarea' })``;
 
 type CabinFormProps<Values> = Omit<
   FormikConfig<Values>,
-  'children' | 'component' | 'innerRef' | 'render'
+  'component' | 'innerRef' | 'render'
 > & { className?: string };
 
 function CabinForm<V extends FormikValues>(props: CabinFormProps<V>) {
-  const { className, ...formik } = props;
+  const { className, children, ...formik } = props;
 
   return (
     <Formik {...formik}>
-      {({ isSubmitting }) => (
+      {formikProps => (
         <StyledForm className={className}>
           <FormGroup name="name">
             <FormLabel>Cabin name</FormLabel>
@@ -62,14 +60,7 @@ function CabinForm<V extends FormikValues>(props: CabinFormProps<V>) {
             <FormMessage />
           </FormGroup>
 
-          <Row $direction="horizontal" $justify="end" $gap="1rem">
-            <Button $variant="secondary" type="reset">
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              Create Cabin
-            </Button>
-          </Row>
+          {typeof children === 'function' ? children(formikProps) : children}
         </StyledForm>
       )}
     </Formik>
