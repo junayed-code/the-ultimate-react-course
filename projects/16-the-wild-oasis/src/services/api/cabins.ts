@@ -31,33 +31,33 @@ export const createCabin = async (_: string, { arg }: { arg: CabinInsert }) => {
 
   // Create a new cabin with the cabin image file URL
   const cabin = CreateCabinSchema.cast({ ...arg, image });
-  const { data, error } = await supabase.from('cabins').insert(cabin).select();
-
+  const { data, error } = await db.insert(cabin).select().single();
   if (error) {
     console.error(error);
     throw new Error('Cabin could not be created');
   }
 
   // Upload the cabin image
-  const { error: imageUploadError } = await supabase.storage
-    .from('cabins')
-    .upload(imageName, ImageFile);
+  const { error: imageUploadError } = await uploadCabinImage(
+    imageName,
+    ImageFile,
+  );
 
   // If cabin image cannot upload then delete the cabin
   if (imageUploadError) {
-    await deleteCabin(data[0].id);
+    await deleteCabin(data.id);
     throw new Error("Cabin image could not uploaded so cabin wasn't created");
   }
 
-  return data[0];
+  return data;
 };
 
 export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
   const { id, image, ...rest } = arg;
 
   if (image.file !== undefined) {
-    const filename = image.path.split('/').pop() as string;
-    const { error } = await updateCabinImage(filename, image.file);
+    const path = image.path.split('/').pop() as string;
+    const { error } = await updateCabinImage(path, image.file);
 
     if (error) {
       console.error(error);
@@ -80,13 +80,28 @@ export const updateCabin = async (_: string, { arg }: { arg: CabinUpdate }) => {
 };
 
 export const deleteCabin = async (id: number) => {
-  const { error } = await supabase.from('cabins').delete().eq('id', id);
+  const { data, error } = await db.delete().eq('id', id).select().single();
   if (error) {
     console.error(error);
     throw new Error('Cabin could not be deleted');
   }
+  // Delete the cabin image as well
+  const path = data.image.split('/').pop() as string;
+  const { error: deleteImageError } = await deleteCabinImages(path);
+  if (deleteImageError) {
+    console.log(deleteImageError);
+    throw new Error('The cabin image could not be deleted');
+  }
+};
+
+const uploadCabinImage = (path: string, file: File) => {
+  return storage.upload(path, file);
 };
 
 const updateCabinImage = (path: string, file: File) => {
   return storage.update(path, file);
+};
+
+const deleteCabinImages = (...paths: string[]) => {
+  return storage.remove(paths);
 };
