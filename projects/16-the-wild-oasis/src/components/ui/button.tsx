@@ -15,6 +15,11 @@ const sizes = {
     font-size: 1rem;
     padding: 0.625rem 1.75rem;
   `,
+  icon: css`
+    width: 2.375rem;
+    height: 2.375rem;
+    font-size: 1rem;
+  `,
 };
 
 const variants = {
@@ -37,7 +42,7 @@ const variants = {
 };
 
 type ButtonProps = {
-  $size?: 'sm' | 'md' | 'lg';
+  $size?: 'sm' | 'md' | 'lg' | 'icon';
   $variant?: 'primary' | 'secondary' | 'danger';
 };
 
