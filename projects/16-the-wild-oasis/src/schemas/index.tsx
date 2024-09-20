@@ -19,3 +19,12 @@ export const CreateCabinSchema = object().shape({
 });
 
 export const UpdateCabinSchema = CreateCabinSchema.shape({});
+
+export const UpdateSettingsSchema = object().shape({
+  breakfast_price: number().required('Breakfast price is required field'),
+  min_bookings: number().required('Minimum nights/booking is a required field'),
+  max_bookings: number().required('Maximum nights/booking is a required field'),
+  guests_per_bookings: number().required(
+    'Maximum guests/booking is required field',
+  ),
+});

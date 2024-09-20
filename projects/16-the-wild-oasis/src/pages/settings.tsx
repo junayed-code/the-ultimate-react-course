@@ -1,7 +1,16 @@
-import Heading from '@ui/heading';
+import Row from '@ui/row';
+import Container from '@ui/container';
+import UpdateSettingsForm from '@features/settings/update-form';
 
 function Settings() {
-  return <Heading as="h1">Update hotel settings</Heading>;
+  return (
+    <Container>
+      <Row $align="stretch" $gap="2rem">
+        <h3>Update hotel settings</h3>
+        <UpdateSettingsForm />
+      </Row>
+    </Container>
+  );
 }
 
 export default Settings;
