@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
 
 import Logo from '@ui/logo';
 import Navbar from '@components/navbar';
@@ -8,7 +8,7 @@ const Header = styled.header`
   display: flex;
   align-items: center;
   border-bottom: var(--border);
-  padding-left: var(--padding-left);
+  padding: 0 var(--padding);
 `;
 
 const Sidebar = styled.aside`
@@ -36,12 +36,12 @@ const Sidebar = styled.aside`
 `;
 
 const Main = styled.main`
-  padding-left: var(--padding-left);
+  padding: 0 var(--padding);
   overflow-x: auto;
 `;
 
 const LayoutRoot = styled.div`
-  --padding-left: 1.25rem;
+  --padding: 1.25rem;
   --sidebar-width: 16rem;
   --border: 1px solid var(--color-grey-200);
 
