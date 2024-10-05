@@ -14,6 +14,7 @@ import Row from '@ui/row';
 const StyledLabel = styled.label`
   font-weight: 500;
   font-size: 0.875rem;
+  color: var(--color-grey-800);
 `;
 
 const StyledMessage = styled.span`
@@ -35,7 +36,7 @@ const FormGroup = ({ name, ...props }: FormGroupProps) => {
   const id = React.useId();
   return (
     <FormGroupContext.Provider value={{ id: `${id}${name}`, name }}>
-      <Row $align="stretch" {...props} />
+      <Row $direction="vertical" $align="stretch" $width="full" {...props} />
     </FormGroupContext.Provider>
   );
 };

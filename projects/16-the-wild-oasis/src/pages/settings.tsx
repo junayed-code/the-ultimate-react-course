@@ -5,7 +5,7 @@ import UpdateSettingsForm from '@features/settings/update-form';
 function Settings() {
   return (
     <Container>
-      <Row $align="stretch" $gap="2rem">
+      <Row $direction="vertical" $align="stretch" $gap="2rem">
         <h3>Update hotel settings</h3>
         <UpdateSettingsForm />
       </Row>
