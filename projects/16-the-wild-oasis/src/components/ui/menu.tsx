@@ -15,7 +15,6 @@ const StyledMenu = styled.details`
 
 const StyledToggle = styled(Button).attrs({
   as: 'summary',
-  $size: 'icon',
   $variant: 'secondary',
 })`
   cursor: pointer;

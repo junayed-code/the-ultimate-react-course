@@ -81,7 +81,7 @@ function CabinRow({ cabin }: CabinRowProps) {
       <DiscountColumn>{formatCurrency(discount || 0)}</DiscountColumn>
       <Table.Column>
         <Menu>
-          <Menu.Toggle>
+          <Menu.Toggle $size="icon">
             <HiEllipsisVertical />
           </Menu.Toggle>
           <Menu.List>
