@@ -1,26 +1,17 @@
 import { mutate } from 'swr';
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
-import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
+import useSWRMutation from 'swr/mutation';
+import { HiEllipsisVertical, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
 
-import Button from '@components/ui/button';
-import UpdateCabinForm from '@features/cabins/update-form';
-import { Tables } from '@services/supabase/database.types';
+import Menu from '@ui/menu';
+import Table from '@ui/table';
+import ConfirmDeleteModal from '@ui/confirm-delete-modal';
+import UpdateCabinFormModal from '@features/cabins/update-form-modal';
+
 import { formatCurrency } from '@utils/helpers';
+import { Tables } from '@services/supabase/database.types';
 import { createCabin, deleteCabin } from '@services/api/cabins';
-
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.4fr 2.2fr 1fr 1fr 1.4fr;
-  column-gap: 1.25rem;
-  align-items: center;
-  padding: 0.875rem 1.25rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
 
 const Img = styled.img`
   display: block;
@@ -28,40 +19,42 @@ const Img = styled.img`
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.5) translateX(-7px);
 `;
 
-const Name = styled.div`
-  font-weight: 600;
-  color: var(--color-grey-600);
-  font-family: 'Sono';
-`;
-
-const Price = styled.div`
-  font-family: 'Sono';
-  font-weight: 600;
-`;
-
-const Discount = styled.div`
-  font-family: 'Sono';
+const StyledColumn = styled(Table.Column)`
   font-weight: 500;
+`;
+
+const DiscountColumn = styled(StyledColumn)`
   color: var(--color-green-700);
 `;
 
-const TableRowAction = styled.div`
-  & > button {
-    margin-right: 0.5rem;
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-`;
+const ModalOpenButton = styled(Menu.Button).attrs({
+  children: (
+    <>
+      <HiTrash /> Delete
+    </>
+  ),
+})``;
 
 type CabinRowProps = { cabin: Tables<'cabins'> };
 
 function CabinRow({ cabin }: CabinRowProps) {
-  const [showForm, setShowForm] = useState(false);
   const { name, capacity, image, price, discount } = cabin;
+
+  // Delete a cabin mutation
+  const { trigger, isMutating } = useSWRMutation(
+    'cabins',
+    () => deleteCabin(cabin.id),
+    {
+      onSuccess() {
+        toast.success('The cabin successfully deleted');
+      },
+      onError(error) {
+        toast.error(error.message);
+      },
+    },
+  );
 
   const handleDuplicateCabin = async () => {
     try {
@@ -77,52 +70,43 @@ function CabinRow({ cabin }: CabinRowProps) {
     }
   };
 
-  const handleDeleteCabin = async () => {
-    try {
-      await mutate('cabins', deleteCabin(cabin.id), {
-        populateCache: false,
-        optimisticData: current =>
-          current.filter((item: Tables<'cabins'>) => item.id !== cabin.id),
-      });
-      toast.success('Cabin successfully deleted');
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  };
-
   return (
-    <>
-      <TableRow>
+    <Table.Row>
+      <Table.Column>
         <Img src={image} />
-        <Name>{name}</Name>
-        <div>Fits up to {capacity} guests</div>
-        <Price>{formatCurrency(price)}</Price>
-        <Discount>{formatCurrency(discount || 0)}</Discount>
-        <TableRowAction>
-          <Button
-            $size="icon"
-            $variant="secondary"
-            onClick={handleDuplicateCabin}
-          >
-            <HiSquare2Stack />
-          </Button>
-          <Button $size="icon" onClick={() => setShowForm(show => !show)}>
-            <HiPencil />
-          </Button>
-          <Button $size="icon" $variant="danger" onClick={handleDeleteCabin}>
-            <HiTrash />
-          </Button>
-        </TableRowAction>
-      </TableRow>
+      </Table.Column>
+      <StyledColumn>{name}</StyledColumn>
+      <Table.Column>Fits up to {capacity} guests</Table.Column>
+      <StyledColumn>{formatCurrency(price)}</StyledColumn>
+      <DiscountColumn>{formatCurrency(discount || 0)}</DiscountColumn>
+      <Table.Column>
+        <Menu>
+          <Menu.Toggle>
+            <HiEllipsisVertical />
+          </Menu.Toggle>
+          <Menu.List>
+            <Menu.Item>
+              <Menu.Button onClick={handleDuplicateCabin}>
+                <HiSquare2Stack /> Duplicate
+              </Menu.Button>
+            </Menu.Item>
 
-      {/* Show the update cabin form */}
-      {showForm && (
-        <UpdateCabinForm
-          initialValues={cabin}
-          onUpdate={() => setShowForm(false)}
-        />
-      )}
-    </>
+            <Menu.Item>
+              <UpdateCabinFormModal cabin={cabin} />
+            </Menu.Item>
+
+            <Menu.Item>
+              <ConfirmDeleteModal
+                resourceName={cabin.name}
+                isDeleting={isMutating}
+                OpenButtonCom={ModalOpenButton}
+                onConfirm={arg => trigger().then(arg.handleClose)}
+              />
+            </Menu.Item>
+          </Menu.List>
+        </Menu>
+      </Table.Column>
+    </Table.Row>
   );
 }
 
