@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 import Row from '@ui/row';
-import Button from '@ui/button';
+import Filter from '@ui/filter';
 import Container from '@ui/container';
 import CabinTable from '@features/cabins/table';
-import CreateCabinForm from '@features/cabins/create-form';
+import CreateCabinFormModal from '@features/cabins/create-form-modal';
 
 const StyledContainer = styled(Container)`
   min-width: 58rem;
@@ -16,16 +16,18 @@ const StyledContainer = styled(Container)`
 function Cabins() {
   return (
     <StyledContainer>
-      <Row $direction="horizontal" $justify="between">
+      <Row $justify="between">
         <h3>All cabins</h3>
-        <Row $direction="horizontal" $gap="1rem">
-          <p>Filter/Sort</p>
-          <Button>Add Cabin</Button>
+        <Row $gap="1rem">
+          <Filter by="discount">
+            <Filter.Option value="no">No discount</Filter.Option>
+            <Filter.Option value="yes">With discount</Filter.Option>
+          </Filter>
+          <CreateCabinFormModal />
         </Row>
       </Row>
 
       <CabinTable />
-      <CreateCabinForm />
     </StyledContainer>
   );
 }
