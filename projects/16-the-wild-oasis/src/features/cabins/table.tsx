@@ -4,13 +4,13 @@ import Table from '@ui/table';
 import Spinner from '@ui/spinner';
 import CabinRow from '@features/cabins/row';
 import { cabinsFetcher } from '@services/api/cabins';
-import { useFilterCabins } from '@hooks/use-filter-cabins';
+import { useQueryOperation } from '@hooks/use-query-operation';
 
 function CabinTable() {
   const { data, isLoading } = useSWR('cabins', cabinsFetcher, {
     revalidateOnFocus: false,
   });
-  const cabins = useFilterCabins(data);
+  const cabins = useQueryOperation(data, ['discount']);
 
   if (isLoading) return <Spinner />;
 

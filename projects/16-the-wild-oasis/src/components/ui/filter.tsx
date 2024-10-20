@@ -1,9 +1,9 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { HiChevronDown } from 'react-icons/hi2';
+import { useSearchParams } from 'react-router-dom';
 
 import Menu from '@ui/menu';
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 const FilterToggle = styled(Menu.Toggle)`
   font-style: italic;
@@ -51,20 +51,26 @@ const FilterButton = styled<typeof Menu.Button, { $active?: boolean }>(
 
 type FilterButtonProps = React.ComponentProps<typeof Menu.Button> & {
   value: string;
+  arg?: 'e' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte';
 };
 
-function FilterOption({ value, ...props }: FilterButtonProps) {
+function FilterOption({ value, arg, ...props }: FilterButtonProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { by } = React.useContext(FilterContext);
-  const hasParam = searchParams.has(by, value);
+  const key = arg ? `${by}[${arg}]` : by;
+  const currKey = [...searchParams.keys()].find(key => key.startsWith(by));
+  const isActive = key === currKey;
 
   const handleClick = () => {
-    if (hasParam) searchParams.delete(by);
-    else searchParams.set(by, value);
+    if (isActive) searchParams.delete(key);
+    else {
+      searchParams.delete(currKey!);
+      searchParams.set(key, value);
+    }
     setSearchParams(searchParams);
   };
 
-  return <FilterButton {...props} $active={hasParam} onClick={handleClick} />;
+  return <FilterButton {...props} $active={isActive} onClick={handleClick} />;
 }
 
 const FilterContext = React.createContext({} as { by: string });
