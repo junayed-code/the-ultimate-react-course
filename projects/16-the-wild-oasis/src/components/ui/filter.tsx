@@ -59,7 +59,7 @@ function FilterOption({ value, arg, ...props }: FilterButtonProps) {
   const { by } = React.useContext(FilterContext);
   const key = arg ? `${by}[${arg}]` : by;
   const currKey = [...searchParams.keys()].find(key => key.startsWith(by));
-  const isActive = key === currKey;
+  const isActive = searchParams.has(key, value);
 
   const handleClick = () => {
     if (isActive) searchParams.delete(key);
