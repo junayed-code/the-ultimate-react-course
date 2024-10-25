@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import Logo from '@ui/logo';
 import Navbar from '@components/navbar';
+import Uploader from '@components/uploader';
 
 const Header = styled.header`
   display: flex;
@@ -61,6 +62,7 @@ function AppLayout() {
       <Sidebar>
         <Logo />
         <Navbar />
+        <Uploader />
       </Sidebar>
 
       <Header>

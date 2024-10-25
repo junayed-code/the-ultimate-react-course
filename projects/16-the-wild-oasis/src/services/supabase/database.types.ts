@@ -15,14 +15,16 @@ export type Database = {
           cabin_price: number
           created_at: string
           end_date: string
-          extra_price: number
-          guests_id: number | null
+          extra_price: number | null
+          guest_id: number
+          guests_count: number
           has_breakfast: boolean
           id: number
           is_paid: boolean
           nights: number
           observations: string
           start_date: string
+          status: string
           total_price: number
         }
         Insert: {
@@ -30,14 +32,16 @@ export type Database = {
           cabin_price: number
           created_at?: string
           end_date: string
-          extra_price: number
-          guests_id?: number | null
+          extra_price?: number | null
+          guest_id: number
+          guests_count: number
           has_breakfast: boolean
           id?: number
           is_paid: boolean
           nights: number
           observations: string
           start_date: string
+          status: string
           total_price: number
         }
         Update: {
@@ -45,14 +49,16 @@ export type Database = {
           cabin_price?: number
           created_at?: string
           end_date?: string
-          extra_price?: number
-          guests_id?: number | null
+          extra_price?: number | null
+          guest_id?: number
+          guests_count?: number
           has_breakfast?: boolean
           id?: number
           is_paid?: boolean
           nights?: number
           observations?: string
           start_date?: string
+          status?: string
           total_price?: number
         }
         Relationships: [
@@ -65,7 +71,7 @@ export type Database = {
           },
           {
             foreignKeyName: "bookings_guests_id_fkey"
-            columns: ["guests_id"]
+            columns: ["guest_id"]
             isOneToOne: false
             referencedRelation: "guests"
             referencedColumns: ["id"]
@@ -86,10 +92,10 @@ export type Database = {
         Insert: {
           capacity: number
           created_at?: string
-          description: string
+          description?: string
           discount?: number | null
           id?: number
-          image: string
+          image?: string
           name: string
           price: number
         }
@@ -258,4 +264,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
