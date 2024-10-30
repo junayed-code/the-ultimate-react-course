@@ -1,19 +1,23 @@
 import supabase from '@services/supabase';
 
+const MAX_BOOKINGS_LIMIT = 10;
+
 const db = () => supabase.from('bookings');
 
 export async function bookingsFetcher([, search]: [string, string]) {
   const params = new URLSearchParams(search);
+  const sort = params.get('sort') ?? '-start_date';
+  const page = Number(params.get('page') ?? 1) - 1;
+  // Delete sort and page params to prevent unexpected behavior when
+  // the filter action happens.
+  params.delete('sort');
+  params.delete('page');
+
+  // Make the base query
   let query = db().select(
     'id, nights, status, start_date, end_date, total_price, cabins(name), guests(fullname, email)',
+    { count: 'exact' },
   );
-
-  // Sort bookings by field in ascending or descending order
-  const sort = params.get('sort') ?? '-start_date';
-  const isAscending = !sort.startsWith('-');
-  const field = sort.replace('-', '');
-  query = query.order(field, { ascending: isAscending });
-  params.delete('sort');
 
   // Filter bookings according to params and condition
   params.forEach((value, key) => {
@@ -42,8 +46,28 @@ export async function bookingsFetcher([, search]: [string, string]) {
     }
   });
 
-  const { data, error } = await query;
+  // Sort bookings by field in ascending or descending order
+  const isAscending = !sort.startsWith('-');
+  const field = sort.replace('-', '');
+  query = query.order(field, { ascending: isAscending });
 
+  // Make pagination for the bookings
+  const limit = MAX_BOOKINGS_LIMIT,
+    from = page * limit,
+    to = from + limit;
+  query = query.range(from, to).limit(limit);
+
+  const { data: bookings, error, count } = await query;
   if (error) throw new Error('Bookings could not be loaded');
-  return data;
+
+  const pageCount = Math.ceil(count! / limit);
+  return {
+    count,
+    limit,
+    bookings,
+    pageCount,
+    page: page + 1,
+    from: from + 1,
+    to: page === pageCount - 1 ? count! : to,
+  };
 }

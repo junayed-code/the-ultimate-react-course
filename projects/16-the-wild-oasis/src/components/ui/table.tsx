@@ -10,11 +10,11 @@ const StyledTable = styled.table`
   border: 1px solid var(--color-grey-100);
   --border: 1px solid var(--color-grey-200);
 
-  & :where(th, td) {
+  :where(th, td) {
     vertical-align: middle;
   }
 
-  & tr:not(:last-child) {
+  tr:not(:last-child) {
     border-bottom: var(--border);
   }
 `;
@@ -26,7 +26,13 @@ const StyledHeader = styled.thead`
   text-transform: uppercase;
   border-bottom: var(--border);
   color: var(--color-grey-600);
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-100);
+`;
+
+const StyledFooter = styled.tfoot`
+  white-space: nowrap;
+  color: var(--color-grey-600);
+  background-color: var(--color-grey-100);
 `;
 
 const StyledBody = styled.tbody``;
@@ -55,6 +61,6 @@ Table.Body = Body;
 Table.Row = styled.tr``;
 Table.Header = StyledHeader;
 Table.Column = StyledColumn;
-Table.Footer = styled.tfoot``;
+Table.Footer = StyledFooter;
 
 export default Table;
