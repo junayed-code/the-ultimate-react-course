@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 import Button from '@ui/button';
 
@@ -55,19 +56,30 @@ const StyledItem = styled.li`
   }
 `;
 
-const StyledButton = styled(Button).attrs({
-  $variant: 'secondary',
-})`
-  width: 100%;
+const CommonButtonStyles = css`
   border: none;
   line-height: 1.5;
   font-weight: 400;
   padding: 0.25rem 0.5rem;
+  white-space: nowrap;
   justify-content: flex-start;
   background-color: transparent;
   &:enabled:hover {
     background-color: none;
   }
+`;
+
+const StyledButton = styled(Button).attrs({
+  $variant: 'secondary',
+})`
+  ${CommonButtonStyles}
+`;
+
+const StyledLink = styled(Link).attrs<React.ComponentProps<typeof Button>>({
+  $variant: 'secondary',
+})`
+  ${Button.componentStyle.rules}
+  ${CommonButtonStyles}
 `;
 
 type MenuProps = React.ComponentProps<typeof StyledMenu>;
@@ -99,6 +111,7 @@ function Menu({ children, ...props }: MenuProps) {
 
 Menu.List = StyledList;
 Menu.Item = StyledItem;
+Menu.Link = StyledLink;
 Menu.Toggle = StyledToggle;
 Menu.Button = StyledButton;
 
