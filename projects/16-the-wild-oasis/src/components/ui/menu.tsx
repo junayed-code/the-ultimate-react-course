@@ -57,6 +57,7 @@ const StyledItem = styled.li`
 `;
 
 const CommonButtonStyles = css`
+  width: 100%;
   border: none;
   line-height: 1.5;
   font-weight: 400;
