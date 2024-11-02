@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
+import { HiEye, HiEllipsisVertical } from 'react-icons/hi2';
 
 import Row from '@ui/row';
 import Tag from '@ui/tag';
+import Menu from '@ui/menu';
 import Table from '@ui/table';
 
 import { bookingsFetcher } from '@services/api/bookings';
@@ -38,7 +40,7 @@ const tagVariantOnStatus = {
 } as const;
 
 type BookingRowProps = {
-  booking: Awaited<ReturnType<typeof bookingsFetcher>>[number];
+  booking: Awaited<ReturnType<typeof bookingsFetcher>>['bookings'][number];
 };
 
 function BookingRow({ booking }: BookingRowProps) {
@@ -77,6 +79,22 @@ function BookingRow({ booking }: BookingRowProps) {
       </Table.Column>
 
       <AmountColumn>{formatCurrency(total_price)}</AmountColumn>
+
+      {/* Booking actions column */}
+      <Table.Column>
+        <Menu>
+          <Menu.Toggle $size="icon">
+            <HiEllipsisVertical />
+          </Menu.Toggle>
+          <Menu.List>
+            <Menu.Item>
+              <Menu.Link to={`/bookings/${booking.id}`}>
+                <HiEye /> See detail
+              </Menu.Link>
+            </Menu.Item>
+          </Menu.List>
+        </Menu>
+      </Table.Column>
     </Table.Row>
   );
 }

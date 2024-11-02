@@ -71,3 +71,18 @@ export async function bookingsFetcher([, search]: [string, string]) {
     to: page === pageCount - 1 ? count! : to,
   };
 }
+
+export async function getBooking([, id]: [string, string]) {
+  if (!id) return;
+  const { data, error } = await db()
+    .select('*, cabins(*), guests(*)')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking not found');
+  }
+
+  return data;
+}
