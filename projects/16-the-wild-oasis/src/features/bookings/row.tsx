@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
-import { HiEye, HiEllipsisVertical } from 'react-icons/hi2';
+import {
+  HiEye,
+  HiEllipsisVertical,
+  HiArrowDownOnSquare,
+} from 'react-icons/hi2';
 
 import Row from '@ui/row';
 import Tag from '@ui/tag';
@@ -92,6 +96,13 @@ function BookingRow({ booking }: BookingRowProps) {
                 <HiEye /> See detail
               </Menu.Link>
             </Menu.Item>
+            {status === 'unconfirmed' && (
+              <Menu.Item>
+                <Menu.Link to={`/checkin/${booking.id}`}>
+                  <HiArrowDownOnSquare /> Check in
+                </Menu.Link>
+              </Menu.Item>
+            )}
           </Menu.List>
         </Menu>
       </Table.Column>

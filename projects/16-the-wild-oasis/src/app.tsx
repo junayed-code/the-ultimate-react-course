@@ -9,6 +9,7 @@ import Users from '@pages/users';
 import Login from '@pages/login';
 import Cabins from '@pages/cabins';
 import Account from '@pages/account';
+import Checkin from '@pages/checkin';
 import Booking from '@pages/booking';
 import Bookings from '@pages/bookings';
 import Settings from '@pages/settings';
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       { path: '/settings', element: <Settings /> },
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/bookings/:id', element: <Booking /> },
+      { path: '/checkin/:id', element: <Checkin /> },
     ],
   },
   { path: '/login', element: <Login /> },

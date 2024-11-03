@@ -1,4 +1,5 @@
 import supabase from '@services/supabase';
+import { TablesUpdate } from '@services/supabase/database.types';
 
 const MAX_BOOKINGS_LIMIT = 10;
 
@@ -84,5 +85,22 @@ export async function getBooking([, id]: [string, string]) {
     throw new Error('Booking not found');
   }
 
+  return data;
+}
+
+export async function updateBooking(
+  id: number,
+  values: TablesUpdate<'bookings'>,
+) {
+  const { data, error } = await db()
+    .update(values)
+    .eq('id', id)
+    .select('*, cabins(*), guests(*)')
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be updated');
+  }
   return data;
 }
