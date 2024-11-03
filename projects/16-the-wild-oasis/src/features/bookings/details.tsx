@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import useSWRImmutable from 'swr/immutable';
 
 import Row from '@ui/row';
 import Tag from '@ui/tag';
@@ -7,8 +6,8 @@ import Button from '@ui/button';
 import Spinner from '@ui/spinner';
 import BookingDataBox from '@features/bookings/data-box';
 
+import { useBooking } from '@hooks/bookings';
 import { useMoveBack } from '@hooks/use-move-back';
-import { getBooking } from '@services/api/bookings';
 
 const tagVariantOnStatus = {
   unconfirmed: 'default',
@@ -19,10 +18,7 @@ const tagVariantOnStatus = {
 function BookingDetails() {
   const { id } = useParams();
   const moveBack = useMoveBack();
-  const { data: booking, isLoading } = useSWRImmutable(
-    ['bookings/', id!],
-    getBooking,
-  );
+  const { booking, isLoading } = useBooking(id!);
 
   if (isLoading) return <Spinner />;
   if (!booking) return null;
