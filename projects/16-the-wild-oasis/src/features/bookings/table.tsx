@@ -1,7 +1,6 @@
-import { preload } from 'swr';
 import { useEffect } from 'react';
+import useSWR, { preload } from 'swr';
 import { useSearchParams } from 'react-router-dom';
-import useSWRImmutable from 'swr/immutable';
 
 import Table from '@ui/table';
 import Spinner from '@ui/spinner';
@@ -14,11 +13,12 @@ const MAX_BOOKINGS_LIMIT = 10;
 
 function BookingTable() {
   const [params] = useSearchParams();
-  const { data, isLoading } = useSWRImmutable(
+  const { data, isLoading } = useSWR(
     ['bookings', params.toString()],
     bookingsFetcher,
+    { revalidateOnFocus: false },
   );
-  const { bookings, count, ...rest } = data! || {};
+  const { bookings, count, ...pagination } = data ?? {};
 
   // Preload bookings data effect
   useEffect(() => {
@@ -60,11 +60,11 @@ function BookingTable() {
       />
 
       {/* Show bookings pagination if the bookings count is greater than maximum bookings limit */}
-      {data && count! > data.limit && (
+      {'limit' in pagination && count! > pagination.limit && (
         <Table.Footer>
           <Table.Row>
             <Table.Column colSpan={6} style={{ paddingBlock: '0.5rem' }}>
-              <Pagination count={count!} {...rest} />
+              <Pagination count={count!} {...pagination} />
             </Table.Column>
           </Table.Row>
         </Table.Footer>
