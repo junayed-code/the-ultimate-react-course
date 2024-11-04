@@ -67,6 +67,7 @@ function FilterOption({ value, arg, ...props }: FilterButtonProps) {
       searchParams.delete(currKey!);
       searchParams.set(key, value);
     }
+    searchParams.delete('page');
     setSearchParams(searchParams);
   };
 
