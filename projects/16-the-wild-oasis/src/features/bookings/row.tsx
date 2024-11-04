@@ -4,6 +4,7 @@ import {
   HiEye,
   HiEllipsisVertical,
   HiArrowDownOnSquare,
+  HiArrowUpOnSquare,
 } from 'react-icons/hi2';
 
 import Row from '@ui/row';
@@ -11,6 +12,7 @@ import Tag from '@ui/tag';
 import Menu from '@ui/menu';
 import Table from '@ui/table';
 
+import { useCheckout } from '@hooks/use-checkout';
 import { bookingsFetcher } from '@services/api/bookings';
 import { formatCurrency, formatDistanceFromNow } from '@utils/helpers';
 
@@ -48,6 +50,8 @@ type BookingRowProps = {
 };
 
 function BookingRow({ booking }: BookingRowProps) {
+  const { handleCheckout, isCheckingOut } = useCheckout(booking.id + '');
+
   const { cabins, status, guests, nights, start_date, end_date, total_price } =
     booking;
   const variant = tagVariantOnStatus[status as keyof typeof tagVariantOnStatus];
@@ -92,15 +96,29 @@ function BookingRow({ booking }: BookingRowProps) {
           </Menu.Toggle>
           <Menu.List>
             <Menu.Item>
-              <Menu.Link to={`/bookings/${booking.id}`}>
+              <Menu.Link
+                to={`/bookings/${booking.id}`}
+                disabled={isCheckingOut}
+              >
                 <HiEye /> See detail
               </Menu.Link>
             </Menu.Item>
+
+            {/* Only unconfirmed bookings are allowed for check-in */}
             {status === 'unconfirmed' && (
               <Menu.Item>
                 <Menu.Link to={`/checkin/${booking.id}`}>
                   <HiArrowDownOnSquare /> Check in
                 </Menu.Link>
+              </Menu.Item>
+            )}
+
+            {/* Only checked-in bookings are allowed for check-out */}
+            {status === 'checked-in' && (
+              <Menu.Item>
+                <Menu.Button onClick={handleCheckout} disabled={isCheckingOut}>
+                  <HiArrowUpOnSquare /> Check out
+                </Menu.Button>
               </Menu.Item>
             )}
           </Menu.List>
