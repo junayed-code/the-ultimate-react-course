@@ -8,12 +8,7 @@ import BookingDataBox from '@features/bookings/data-box';
 
 import { useBooking } from '@hooks/bookings';
 import { useMoveBack } from '@hooks/use-move-back';
-
-const tagVariantOnStatus = {
-  unconfirmed: 'default',
-  'checked-in': 'primary',
-  'checked-out': 'secondary',
-} as const;
+import { pickTagVariant } from '@utils/pick-tag-variant';
 
 function BookingDetails() {
   const { id } = useParams();
@@ -24,15 +19,15 @@ function BookingDetails() {
   if (!booking) return null;
 
   const { status } = booking;
-  const tagVariant =
-    tagVariantOnStatus[status as keyof typeof tagVariantOnStatus];
 
   return (
     <>
       <Row $gap="1.25rem" $justify="between">
         <Row $gap="1rem">
           <h3>Booking #{id}</h3>
-          <Tag $variant={tagVariant}>{status.replace('-', ' ')}</Tag>
+          <Tag $variant={pickTagVariant(status)}>
+            {status.replace('-', ' ')}
+          </Tag>
         </Row>
         <Button $variant="link" $size="initial" onClick={moveBack}>
           &larr; Back

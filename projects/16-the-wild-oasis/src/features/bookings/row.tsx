@@ -14,6 +14,7 @@ import Table from '@ui/table';
 
 import { useCheckout } from '@hooks/use-checkout';
 import { bookingsFetcher } from '@services/api/bookings';
+import { pickTagVariant } from '@utils/pick-tag-variant';
 import { formatCurrency, formatDistanceFromNow } from '@utils/helpers';
 
 const CabinNameColumn = styled(Table.Column)`
@@ -39,12 +40,6 @@ const Stacked = styled(Row).attrs({
   }
 `;
 
-const tagVariantOnStatus = {
-  unconfirmed: 'default',
-  'checked-in': 'primary',
-  'checked-out': 'secondary',
-} as const;
-
 type BookingRowProps = {
   booking: Awaited<ReturnType<typeof bookingsFetcher>>['bookings'][number];
 };
@@ -54,7 +49,6 @@ function BookingRow({ booking }: BookingRowProps) {
 
   const { cabins, status, guests, nights, start_date, end_date, total_price } =
     booking;
-  const variant = tagVariantOnStatus[status as keyof typeof tagVariantOnStatus];
 
   return (
     <Table.Row>
@@ -83,7 +77,7 @@ function BookingRow({ booking }: BookingRowProps) {
       </Table.Column>
 
       <Table.Column>
-        <Tag $variant={variant}>{status}</Tag>
+        <Tag $variant={pickTagVariant(status)}>{status}</Tag>
       </Table.Column>
 
       <AmountColumn>{formatCurrency(total_price)}</AmountColumn>
