@@ -23,19 +23,20 @@ function BookingTable() {
   // Preload bookings data effect
   useEffect(() => {
     if (!count) return;
-    const currPage = Number(params.get('page') ?? 1);
+    const searchParams = new URLSearchParams(params);
+    const currPage = Number(searchParams.get('page') ?? 1);
     const pageCount = Math.ceil(count / MAX_BOOKINGS_LIMIT);
 
     // Preload for next page
     if (currPage < pageCount) {
-      params.set('page', currPage + 1 + '');
-      preload(['bookings', params.toString()], bookingsFetcher);
+      searchParams.set('page', currPage + 1 + '');
+      preload(['bookings', searchParams.toString()], bookingsFetcher);
     }
     // Preload for previous page
     if (currPage > 1) {
-      if (currPage === 2) params.delete('page');
-      else params.set('page', currPage - 1 + '');
-      preload(['bookings', params.toString()], bookingsFetcher);
+      if (currPage === 2) searchParams.delete('page');
+      else searchParams.set('page', currPage - 1 + '');
+      preload(['bookings', searchParams.toString()], bookingsFetcher);
     }
   }, [params, count]);
 
