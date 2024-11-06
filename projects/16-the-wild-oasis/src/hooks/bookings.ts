@@ -4,14 +4,9 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 
 import { deleteBooking, getBooking } from '@services/api/bookings';
-import { Tables } from '@services/supabase/database.types';
 
 type SWRKey = [string, string];
-type SWRMutationConfig = SWRMutationConfiguration<
-  Tables<'bookings'>,
-  Error,
-  SWRKey
->;
+type SWRMutationConfig = SWRMutationConfiguration<null, Error, SWRKey>;
 
 export const useBooking = (id: string, config?: SWRConfiguration) => {
   const { data, mutate, ...swr } = useSWR(['booking', id], getBooking, {
