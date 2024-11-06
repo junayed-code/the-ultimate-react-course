@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
+import { useLocation } from 'react-router-dom';
 import {
   HiEye,
+  HiTrash,
   HiEllipsisVertical,
   HiArrowDownOnSquare,
   HiArrowUpOnSquare,
@@ -11,8 +13,10 @@ import Row from '@ui/row';
 import Tag from '@ui/tag';
 import Menu from '@ui/menu';
 import Table from '@ui/table';
+import ConfirmDeleteModal from '@ui/confirm-delete-modal';
 
 import { useCheckout } from '@hooks/use-checkout';
+import { useDeleteBooking } from '@hooks/bookings';
 import { bookingsFetcher } from '@services/api/bookings';
 import { pickTagVariant } from '@utils/pick-tag-variant';
 import { formatCurrency, formatDistanceFromNow } from '@utils/helpers';
@@ -40,12 +44,24 @@ const Stacked = styled(Row).attrs({
   }
 `;
 
+const ModalOpenButton = styled(Menu.Button).attrs({
+  children: (
+    <>
+      <HiTrash /> Delete
+    </>
+  ),
+})``;
+
 type BookingRowProps = {
   booking: Awaited<ReturnType<typeof bookingsFetcher>>['bookings'][number];
 };
 
 function BookingRow({ booking }: BookingRowProps) {
+  const location = useLocation();
   const { handleCheckout, isCheckingOut } = useCheckout(booking.id + '');
+  const { bookingDeleteTrigger, isBookingDeleting } = useDeleteBooking(
+    booking.id,
+  );
 
   const { cabins, status, guests, nights, start_date, end_date, total_price } =
     booking;
@@ -91,6 +107,7 @@ function BookingRow({ booking }: BookingRowProps) {
           <Menu.List>
             <Menu.Item>
               <Menu.Link
+                state={location}
                 to={`/bookings/${booking.id}`}
                 disabled={isCheckingOut}
               >
@@ -115,6 +132,16 @@ function BookingRow({ booking }: BookingRowProps) {
                 </Menu.Button>
               </Menu.Item>
             )}
+
+            {/* A confirmation modal for delete a booking */}
+            <Menu.Item>
+              <ConfirmDeleteModal
+                resourceName={`booking#${booking.id}`}
+                OpenButtonCom={ModalOpenButton}
+                isDeleting={isBookingDeleting}
+                onConfirm={arg => bookingDeleteTrigger().then(arg.handleClose)}
+              />
+            </Menu.Item>
           </Menu.List>
         </Menu>
       </Table.Column>
