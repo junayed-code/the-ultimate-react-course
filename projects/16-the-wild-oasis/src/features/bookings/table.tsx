@@ -40,7 +40,7 @@ function BookingTable() {
     }
   }, [params, count]);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner $size="lg" $variant="primary" />;
 
   return (
     <Table>

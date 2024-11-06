@@ -35,7 +35,7 @@ function BookingDetails() {
     Number(id),
   );
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner $size="lg" $variant="primary" />;
   if (!booking) return null;
 
   const { status } = booking;

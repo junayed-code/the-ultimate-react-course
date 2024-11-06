@@ -45,7 +45,7 @@ function UpdateSettingsForm() {
     }
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner $size="lg" $variant="primary" />;
 
   return (
     <Formik

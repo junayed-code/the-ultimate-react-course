@@ -40,7 +40,7 @@ function CheckinBooking() {
     if (booking?.is_paid) setConfirmPaid(booking.is_paid);
   }, [booking?.is_paid]);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner $size="lg" $variant="primary" />;
   if (!booking) return null;
 
   const { guests, total_price, has_breakfast, guests_count, nights } = booking;
