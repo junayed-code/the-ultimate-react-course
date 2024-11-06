@@ -28,3 +28,8 @@ export const UpdateSettingsSchema = object().shape({
     'Maximum guests/booking is required field',
   ),
 });
+
+export const LoginSchema = object().shape({
+  email: string().email().required('Email is a required field'),
+  password: string().min(6).max(25).required('Password is a required field'),
+});
