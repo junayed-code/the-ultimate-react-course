@@ -15,26 +15,36 @@ import Bookings from '@pages/bookings';
 import Settings from '@pages/settings';
 import Dashboard from '@pages/dashboard';
 import PageNotFound from '@pages/page-not-found';
-import AppLayout from '@components/layout/app';
+
 import GlobalStyles from '@/styles/global';
+import AppLayout from '@components/layout/app';
+import Protected from '@features/auth/protected';
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />,
+    element: <Protected protect="authenticated" />,
     errorElement: <PageNotFound />,
     children: [
-      { index: true, element: <Navigate to="/dashboard" replace /> },
-      { path: '/users', element: <Users /> },
-      { path: '/cabins', element: <Cabins /> },
-      { path: '/account', element: <Account /> },
-      { path: '/bookings', element: <Bookings /> },
-      { path: '/settings', element: <Settings /> },
-      { path: '/dashboard', element: <Dashboard /> },
-      { path: '/bookings/:id', element: <Booking /> },
-      { path: '/checkin/:id', element: <Checkin /> },
+      {
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <Navigate to="/dashboard" replace /> },
+          { path: '/users', element: <Users /> },
+          { path: '/cabins', element: <Cabins /> },
+          { path: '/account', element: <Account /> },
+          { path: '/bookings', element: <Bookings /> },
+          { path: '/settings', element: <Settings /> },
+          { path: '/dashboard', element: <Dashboard /> },
+          { path: '/bookings/:id', element: <Booking /> },
+          { path: '/checkin/:id', element: <Checkin /> },
+        ],
+      },
     ],
   },
-  { path: '/login', element: <Login /> },
+  {
+    element: <Protected protect="unauthenticated" />,
+    children: [{ path: '/login', element: <Login /> }],
+  },
 ]);
 
 function App() {

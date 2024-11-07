@@ -1,8 +1,11 @@
 import toast from 'react-hot-toast';
 import useSWRMutation from 'swr/mutation';
+import useSWRImmutable from 'swr/immutable';
 import { useNavigate } from 'react-router-dom';
+import { type SWRConfiguration } from 'swr';
+import { type User } from '@supabase/supabase-js';
 
-import { loginFetcher } from '@services/api/auth';
+import { getLoggedInUser, loginFetcher } from '@services/api/auth';
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -23,4 +26,15 @@ export function useLogin() {
   });
 
   return { loginTrigger, isLogin, ...swr };
+}
+
+export function useAuth(config?: SWRConfiguration<User | null>) {
+  const { data: user, ...swr } = useSWRImmutable(
+    'user',
+    getLoggedInUser,
+    config,
+  );
+  const isAuthenticated = user?.role === 'authenticated';
+
+  return { user, isAuthenticated, ...swr };
 }
