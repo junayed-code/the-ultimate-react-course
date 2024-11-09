@@ -14,6 +14,12 @@ export async function loginFetcher(
   return data.user;
 }
 
+export async function logoutFetcher() {
+  const { error } = await auth.signOut();
+  if (error) throw error;
+  return null;
+}
+
 export async function getLoggedInUser() {
   // Check if the session is exist
   const {

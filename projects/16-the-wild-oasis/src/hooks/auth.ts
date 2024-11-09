@@ -2,10 +2,14 @@ import toast from 'react-hot-toast';
 import useSWRMutation from 'swr/mutation';
 import useSWRImmutable from 'swr/immutable';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { type SWRConfiguration } from 'swr';
+import { mutate, type SWRConfiguration } from 'swr';
 import { type User } from '@supabase/supabase-js';
 
-import { getLoggedInUser, loginFetcher } from '@services/api/auth';
+import {
+  getLoggedInUser,
+  loginFetcher,
+  logoutFetcher,
+} from '@services/api/auth';
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -40,4 +44,26 @@ export function useAuth(config?: SWRConfiguration<User | null>) {
   const isAuthenticated = user?.role === 'authenticated';
 
   return { user, isAuthenticated, ...swr };
+}
+
+export function useLogout() {
+  const {
+    trigger: logoutTrigger,
+    isMutating: isLoggingOut,
+    ...swr
+  } = useSWRMutation('user', logoutFetcher, {
+    revalidate: false,
+    populateCache: true,
+    onSuccess() {
+      // Clear the all cache data
+      mutate(_key => true, undefined, { revalidate: false });
+    },
+    onError() {
+      toast.error('An error occurred while logging out the user');
+    },
+  });
+
+  const handleLogout = () => logoutTrigger();
+
+  return { handleLogout, logoutTrigger, isLoggingOut, ...swr };
 }

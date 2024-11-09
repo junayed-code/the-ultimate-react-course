@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
+import Row from '@ui/row';
 import Logo from '@ui/logo';
 import Navbar from '@components/navbar';
 import Uploader from '@components/uploader';
+import LogoutButton from '@components/logout-button';
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
+const Header = styled(Row).attrs({ as: 'header', $justify: 'between' })`
   border-bottom: var(--border);
   padding: 0 var(--padding);
 `;
@@ -67,6 +67,7 @@ function AppLayout() {
 
       <Header>
         <h4>HEADER</h4>
+        <LogoutButton />
       </Header>
 
       <Main>
