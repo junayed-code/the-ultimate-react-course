@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import useSWRMutation from 'swr/mutation';
 import useSWRImmutable from 'swr/immutable';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { type SWRConfiguration } from 'swr';
 import { type User } from '@supabase/supabase-js';
 
@@ -9,6 +9,8 @@ import { getLoggedInUser, loginFetcher } from '@services/api/auth';
 
 export function useLogin() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+
   const {
     trigger: loginTrigger,
     isMutating: isLogin,
@@ -18,7 +20,8 @@ export function useLogin() {
     populateCache: true,
     onSuccess() {
       toast.success('You are successfully logged in');
-      navigate('/dashboard');
+      const to = 'pathname' in state ? state.pathname : '/dashboard';
+      navigate(to);
     },
     onError() {
       toast.error('Incorrect email or password');

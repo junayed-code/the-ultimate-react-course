@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import styled from 'styled-components';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
@@ -27,28 +26,21 @@ function LoadingSpinner() {
 type ProtectedProps = { protect: 'authenticated' | 'unauthenticated' };
 
 function Protected({ protect }: ProtectedProps) {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      {protect === 'authenticated' && <ProtectedAuthenticated />}
-      {protect === 'unauthenticated' && <ProtectedUnauthenticated />}
-    </Suspense>
-  );
-}
-
-function ProtectedAuthenticated() {
   const location = useLocation();
-  const { isAuthenticated } = useAuth({ suspense: true });
+  const { isAuthenticated, isLoading } = useAuth();
 
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={location} />
-  );
-}
+  if (isLoading) return <LoadingSpinner />;
 
-function ProtectedUnauthenticated() {
-  const { isAuthenticated } = useAuth({ suspense: true });
-  return !isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  switch (protect) {
+    case 'authenticated':
+      return isAuthenticated ? (
+        <Outlet />
+      ) : (
+        <Navigate to="/login" state={location} replace />
+      );
+    case 'unauthenticated':
+      return !isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+  }
 }
 
 export default Protected;
