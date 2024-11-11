@@ -9,7 +9,53 @@ import {
   getLoggedInUser,
   loginFetcher,
   logoutFetcher,
+  signupFetcher,
 } from '@services/api/auth';
+
+type SignUpCredentials = {
+  email: string;
+  password: string;
+  optionalData?: { displayName?: string; avatar?: string | null };
+};
+
+export function useSignUp() {
+  const { trigger, isMutating, ...swr } = useSWRMutation(
+    'signup',
+    signupFetcher,
+    {
+      onSuccess() {
+        toast.success(
+          'The account is successfully created! Please verify this account to see your mail inbox.',
+        );
+      },
+      onError(error) {
+        switch (error?.code) {
+          case 'email_address_not_authorized':
+            toast.error(
+              'Turn off the confirm email option or set up the custom SMTP provider to send verification emails to verify users',
+            );
+            break;
+          default:
+            toast.error('An error occurred while creating the account!');
+        }
+      },
+    },
+  );
+
+  const signupTrigger = ({
+    email,
+    password,
+    optionalData,
+  }: SignUpCredentials) => {
+    return trigger({
+      email,
+      password,
+      options: { data: optionalData },
+    });
+  };
+
+  return { signupTrigger, isSigningUp: isMutating, ...swr };
+}
 
 export function useLogin() {
   const navigate = useNavigate();

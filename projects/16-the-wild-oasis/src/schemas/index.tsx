@@ -33,3 +33,23 @@ export const LoginSchema = object().shape({
   email: string().email().required('Email is a required field'),
   password: string().min(6).max(25).required('Password is a required field'),
 });
+
+// Define a password validation schema
+const PasswordSchema = string()
+  .min(8, 'Password must be at least 8 characters')
+  .max(25, 'Password must be at most 25 characters')
+  .matches(/[0-9]/, 'Password must have at least a number')
+  .matches(/[A-Z]/, 'Password must have at least an uppercase letter')
+  .required('Password is a required field');
+
+// User sing up form' validation schema
+export const SignUpSchema = object().shape({
+  name: string().required('Name is a required field'),
+  email: string().email().required('Email is a required field'),
+  password: PasswordSchema,
+  confirmPassword: string()
+    .min(8)
+    .max(25)
+    .oneOf([ref('password')], 'Must match with the password field value')
+    .required('Confirm password is a required field'),
+});

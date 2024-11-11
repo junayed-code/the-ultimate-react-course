@@ -7,9 +7,12 @@ import {
   ErrorMessage,
   FieldConfig,
   useFormikContext,
+  FormikConfig,
 } from 'formik';
 
 import Row from '@ui/row';
+
+export type HandleSubmit<Values> = FormikConfig<Values>['onSubmit'];
 
 const StyledLabel = styled.label`
   font-weight: 500;

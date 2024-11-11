@@ -1,7 +1,19 @@
-import Heading from '@ui/heading';
+import styled from 'styled-components';
 
-function NewUsers() {
-  return <Heading as="h1">Create a new user</Heading>;
+import Container from '@ui/container';
+import SignUpForm from '@features/auth/signup-form';
+
+const Heading = styled.h3`
+  margin-bottom: 2rem;
+`;
+
+function Users() {
+  return (
+    <Container>
+      <Heading>Create a new user</Heading>
+      <SignUpForm />
+    </Container>
+  );
 }
 
-export default NewUsers;
+export default Users;

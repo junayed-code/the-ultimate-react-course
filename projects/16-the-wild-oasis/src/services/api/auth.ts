@@ -1,13 +1,26 @@
 import supabase from '@services/supabase';
-import { SignInWithPasswordCredentials } from '@supabase/supabase-js';
+import type {
+  SignInWithPasswordCredentials,
+  SignUpWithPasswordCredentials,
+} from '@supabase/supabase-js';
 
 const auth = supabase.auth;
 
-type FetcherArg = { arg: SignInWithPasswordCredentials };
+type SignUpFetcherArg = { arg: SignUpWithPasswordCredentials };
+type SignInFetcherArg = { arg: SignInWithPasswordCredentials };
+
+export async function signupFetcher(
+  _: string,
+  { arg: credentials }: SignUpFetcherArg,
+) {
+  const { data, error } = await auth.signUp(credentials);
+  if (error) throw error;
+  return data.user;
+}
 
 export async function loginFetcher(
   _: string,
-  { arg: credentials }: FetcherArg,
+  { arg: credentials }: SignInFetcherArg,
 ) {
   const { data, error } = await auth.signInWithPassword(credentials);
   if (error) throw error;
