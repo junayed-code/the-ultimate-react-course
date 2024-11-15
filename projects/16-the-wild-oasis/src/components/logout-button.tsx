@@ -9,7 +9,7 @@ const StyledButton = styled(Button).attrs({
   $size: 'md',
   $variant: 'secondary',
 })`
-  min-width: 8rem;
+  min-width: 7rem;
 `;
 
 function LogoutButton() {

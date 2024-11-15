@@ -1,16 +1,10 @@
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
-import Row from '@ui/row';
 import Logo from '@ui/logo';
+import Header from '@components/header';
 import Navbar from '@components/navbar';
 import Uploader from '@components/uploader';
-import LogoutButton from '@components/logout-button';
-
-const Header = styled(Row).attrs({ as: 'header', $justify: 'between' })`
-  border-bottom: var(--border);
-  padding: 0 var(--padding);
-`;
 
 const Sidebar = styled.aside`
   height: 100dvh;
@@ -49,7 +43,7 @@ const LayoutRoot = styled.div`
   display: grid;
   min-height: 100dvh;
   grid-template-columns: var(--sidebar-width) 1fr;
-  grid-template-rows: 3.5rem 1fr;
+  grid-template-rows: 4rem 1fr;
 
   @media screen and (min-width: 64em) {
     --sidebar-width: 18rem;
@@ -65,10 +59,7 @@ function AppLayout() {
         <Uploader />
       </Sidebar>
 
-      <Header>
-        <h4>HEADER</h4>
-        <LogoutButton />
-      </Header>
+      <Header />
 
       <Main>
         <Outlet />
