@@ -15,7 +15,7 @@ const spinnerVariant = createVariant({
   },
   $size: {
     sm: css`
-      --width: 1.25em;
+      --width: 1.5em;
       --thickness: 2.5px;
     `,
     md: css`

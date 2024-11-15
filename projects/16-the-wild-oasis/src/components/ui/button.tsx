@@ -59,7 +59,7 @@ const Button = styled.button<VariantProps<typeof buttonVariant>>`
   justify-content: center;
   column-gap: 0.5rem;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.5;
   border: 1px solid transparent;
   border-radius: var(--border-radius-md);
   transition:
