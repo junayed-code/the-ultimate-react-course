@@ -10,6 +10,7 @@ import {
   loginFetcher,
   logoutFetcher,
   signupFetcher,
+  updateLoggedInUser,
 } from '@services/api/auth';
 
 type SignUpCredentials = {
@@ -112,4 +113,23 @@ export function useLogout() {
   const handleLogout = () => logoutTrigger();
 
   return { handleLogout, logoutTrigger, isLoggingOut, ...swr };
+}
+
+export function useUserMutation() {
+  const {
+    trigger: handleUserMutation,
+    isMutating: isUserMutating,
+    ...swr
+  } = useSWRMutation('user', updateLoggedInUser, {
+    revalidate: false,
+    populateCache: true,
+    onSuccess() {
+      toast.success('Your profile has been successfully updated');
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+
+  return { handleUserMutation, isUserMutating, ...swr };
 }

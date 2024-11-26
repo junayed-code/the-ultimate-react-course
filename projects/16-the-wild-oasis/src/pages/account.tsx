@@ -1,21 +1,37 @@
-import Heading from '@ui/heading';
-import Row from '@ui/row';
+import styled from 'styled-components';
+
+import Container from '@ui/container';
+import UpdateUserDataForm from '@features/auth/update-user-data-form';
+import { useAuth } from '@hooks/auth';
+
+const Section = styled.section`
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-grey-200);
+
+  h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &:first-of-type {
+    margin-top: 2rem;
+  }
+`;
 
 function Account() {
+  const { user } = useAuth();
+
   return (
-    <>
-      <Heading as="h1">Update your account</Heading>
+    <Container>
+      <h3>{user?.user_metadata.displayName}&apos;s Account</h3>
 
-      <Row>
-        <Heading as="h3">Update user data</Heading>
-        <p>Update user data form</p>
-      </Row>
-
-      <Row>
-        <Heading as="h3">Update password</Heading>
-        <p>Update user password form</p>
-      </Row>
-    </>
+      <Section>
+        <h4>Your profile data</h4>
+        <UpdateUserDataForm />
+      </Section>
+    </Container>
   );
 }
 

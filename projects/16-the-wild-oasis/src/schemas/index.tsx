@@ -1,4 +1,4 @@
-import { string, number, object, ref } from 'yup';
+import { string, number, object, ref, mixed, ValidationError } from 'yup';
 
 export const CreateCabinSchema = object().shape({
   name: string().required('Cabin name is a required field'),
@@ -52,4 +52,28 @@ export const SignUpSchema = object().shape({
     .max(25)
     .oneOf([ref('password')], 'Must match with the password field value')
     .required('Confirm password is a required field'),
+});
+
+export const UpdateUserSchema = object().shape({
+  email: string().email(),
+  avatar: mixed()
+    .test('file-type-validation', value => {
+      if (!(value instanceof File)) return true;
+      const type = value.type.split('/').pop()!;
+      const isValidType = ['png', 'jpg', 'jpeg'].includes(type);
+      const message = `${type.toUpperCase()} file type is not supported`;
+      return isValidType || new ValidationError(message, value, 'avatar');
+    })
+    .test(
+      'file-size-validation',
+      'File size must be less that 300KB',
+      value => {
+        if (!(value instanceof File)) return true;
+        return value.size < 307200;
+      },
+    ),
+  displayName: string()
+    .required('Fill out this field with your name')
+    .min(3, 'Fullname must be at least 3 characters')
+    .max(32, 'Fullname must be at most 32 characters'),
 });
