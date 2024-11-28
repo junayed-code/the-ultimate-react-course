@@ -93,11 +93,14 @@ const GlobalStyles = createGlobalStyle`
     cursor: not-allowed;
   }
 
-  button:disabled,
   select:disabled,
   input:disabled {
     background-color: var(--color-grey-200);
     color: var(--color-grey-500);
+  }
+
+  button:disabled {
+    opacity: 0.65;
   }
 
   input:focus-visible,
