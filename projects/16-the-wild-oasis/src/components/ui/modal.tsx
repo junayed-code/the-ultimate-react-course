@@ -56,6 +56,7 @@ const StyledModal = styled.dialog`
 
   &::backdrop {
     backdrop-filter: blur(2px);
+    background: var(--backdrop-color);
   }
 `;
 
@@ -75,6 +76,7 @@ const StyledModalBox = styled.div<StyledModalBoxProps>`
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-lg);
+  color: var(--color-grey-700);
   background-color: var(--color-grey);
   border-radius: var(--border-radius-lg);
   transform: scale(0.9);
