@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useTheme } from '@features/theme/context';
 
 const StyledLogo = styled.div`
   display: flex;
@@ -12,9 +13,11 @@ const Img = styled.img`
 `;
 
 function Logo() {
+  const { theme } = useTheme();
+
   return (
     <StyledLogo>
-      <Img src="/logo-light.png" alt="Logo" />
+      <Img src={`/logo-${theme}.png`} alt="Logo" />
     </StyledLogo>
   );
 }

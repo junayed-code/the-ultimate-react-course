@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { HiOutlineMoon } from 'react-icons/hi2';
 
 import Row from '@ui/row';
-import Button from '@ui/button';
 import Avatar from '@ui/avatar';
 import LogoutButton from '@components/logout-button';
+import { ThemeToggleButton } from '@features/theme';
 
 import { useAuth } from '@/hooks/auth';
 
 const StyledHeader = styled(Row).attrs({ as: 'header', $justify: 'end' })`
   border-bottom: var(--border);
   padding: 0 var(--padding);
+  background-color: var(--color-grey-50);
 `;
 
 const HeaderList = styled.ul`
@@ -51,9 +51,7 @@ function Header() {
 
         {/* Button to toggle between dark and light mode */}
         <HeaderListItem>
-          <Button $size="icon" $variant="secondary">
-            <HiOutlineMoon />
-          </Button>
+          <ThemeToggleButton />
         </HeaderListItem>
 
         {/* User logout button */}

@@ -19,6 +19,7 @@ import PageNotFound from '@pages/page-not-found';
 import GlobalStyles from '@/styles/global';
 import AppLayout from '@components/layout/app';
 import Protected from '@features/auth/protected';
+import { ThemeProvider } from '@features/theme';
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,9 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
       <Toaster
         position="top-right"
         toastOptions={{

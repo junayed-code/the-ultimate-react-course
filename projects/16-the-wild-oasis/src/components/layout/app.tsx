@@ -17,6 +17,7 @@ const Sidebar = styled.aside`
   position: sticky;
   top: 0;
   border-right: var(--border);
+  background-color: var(--color-grey-50);
 
   &::-webkit-scrollbar {
     width: 0.375rem;
