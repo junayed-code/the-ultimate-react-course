@@ -1,20 +1,11 @@
-import styled from 'styled-components';
-
 import Row from '@ui/row';
 import Filter from '@ui/filter';
 import Container from '@ui/container';
 import DashboardLayout from '@features/dashboard/layout';
 
-const StyledContainer = styled(Container)`
-  min-width: 60rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
-`;
-
 function Dashboard() {
   return (
-    <StyledContainer>
+    <Container>
       <Row $justify="between">
         <h3>Dashboard</h3>
         <Filter by="last">
@@ -24,7 +15,7 @@ function Dashboard() {
         </Filter>
       </Row>
       <DashboardLayout />
-    </StyledContainer>
+    </Container>
   );
 }
 

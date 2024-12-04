@@ -1,21 +1,12 @@
-import styled from 'styled-components';
-
 import Row from '@ui/row';
 import Sort from '@ui/sort';
 import Filter from '@ui/filter';
 import Container from '@ui/container';
 import BookingTable from '@features/bookings/table';
 
-const StyledContainer = styled(Container)`
-  min-width: 58rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2rem;
-`;
-
 function Bookings() {
   return (
-    <StyledContainer>
+    <Container>
       <Row $justify="between">
         <h3>All bookings</h3>
         <Row $gap="0.75rem">
@@ -45,7 +36,7 @@ function Bookings() {
       </Row>
 
       <BookingTable />
-    </StyledContainer>
+    </Container>
   );
 }
 
