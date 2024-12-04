@@ -12,6 +12,9 @@ const StyledHeader = styled(Row).attrs({ as: 'header', $justify: 'end' })`
   border-bottom: var(--border);
   padding: 0 var(--padding);
   background-color: var(--color-grey-50);
+  position: sticky;
+  top: 0;
+  z-index: 99;
 `;
 
 const HeaderList = styled.ul`
