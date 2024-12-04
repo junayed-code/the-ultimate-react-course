@@ -3,7 +3,11 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 
-import { deleteBooking, getBooking } from '@services/api/bookings';
+import {
+  getBooking,
+  deleteBooking,
+  getBookingStatistics,
+} from '@services/api/bookings';
 
 type SWRKey = [string, string];
 type SWRMutationConfig = SWRMutationConfiguration<null, Error, SWRKey>;
@@ -43,3 +47,13 @@ export const useDeleteBooking = (id: number, config?: SWRMutationConfig) => {
 
   return { bookingDeleteTrigger, isBookingDeleting, ...swr };
 };
+
+export function useBookingStatistics() {
+  const [params] = useSearchParams();
+  const { data: statistics, ...swr } = useSWR(
+    ['booking-statistics', params.toString()],
+    getBookingStatistics,
+    { revalidateOnFocus: false },
+  );
+  return { statistics, ...swr };
+}
