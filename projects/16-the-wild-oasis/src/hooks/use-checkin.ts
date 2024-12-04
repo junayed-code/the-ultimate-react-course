@@ -1,9 +1,9 @@
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 
 import { updateBooking } from '@services/api/bookings';
 import { Tables } from '@services/supabase/database.types';
+import { useMoveBack } from '@hooks/use-move-back';
 
 type Key = [string, string];
 type Arg = {
@@ -37,7 +37,7 @@ export const useCheckin = (
   id: string,
   config?: SWRMutationConfiguration<Tables<'bookings'>, Error, Key>,
 ) => {
-  const navigate = useNavigate();
+  const moveBack = useMoveBack();
   const { trigger, isMutating, ...swr } = useSWRMutation(
     ['booking', id],
     checkinBooking,
@@ -46,7 +46,7 @@ export const useCheckin = (
       populateCache: true,
       onSuccess() {
         toast.success(`Booking #${id} has been checked in successfully`);
-        navigate('/bookings');
+        moveBack();
       },
       onError() {
         toast.error('There was an error while checked in the booking');
