@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 import Logo from '@ui/logo';
 import Header from '@components/header';
 import Navbar from '@components/navbar';
-import Uploader from '@components/uploader';
 
 const Sidebar = styled.aside`
   height: 100dvh;
@@ -53,7 +52,6 @@ function AppLayout() {
       <Sidebar>
         <Logo />
         <Navbar />
-        <Uploader />
       </Sidebar>
 
       <Header />
