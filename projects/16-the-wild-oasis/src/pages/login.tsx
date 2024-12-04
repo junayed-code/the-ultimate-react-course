@@ -11,7 +11,7 @@ const LoginLayout = styled.main`
   align-content: center;
   justify-content: center;
   gap: 2rem;
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey);
 `;
 
 const Header = styled(Row).attrs({ $direction: 'vertical', $gap: '0.75rem' })`
