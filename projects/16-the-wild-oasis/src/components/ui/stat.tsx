@@ -8,7 +8,7 @@ const StyledStat = styled.div<{ $color?: Colors }>`
   --background: ${({ $color }) => `var(--color-${$color}-100)`};
 
   padding: 1rem;
-  background-color: var(--color-grey);
+  background-color: var(--color-grey-50);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
 
