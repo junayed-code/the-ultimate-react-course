@@ -28,8 +28,8 @@ const SubmitButton = styled(Button).attrs({ type: 'submit' })`
 `;
 
 const initialValues = {
-  email: 'junayed@example.com',
-  password: 'pass1056',
+  email: '',
+  password: '',
 };
 
 type HandleSubmit = FormikConfig<typeof initialValues>['onSubmit'];
