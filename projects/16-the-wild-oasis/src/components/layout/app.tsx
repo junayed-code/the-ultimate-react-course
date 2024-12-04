@@ -38,17 +38,13 @@ const Main = styled.main`
 
 const LayoutRoot = styled.div`
   --padding: 1.25rem;
-  --sidebar-width: 16rem;
+  --sidebar-width: 16.5rem;
   --border: 1px solid var(--color-grey-200);
 
   display: grid;
   min-height: 100dvh;
   grid-template-columns: var(--sidebar-width) 1fr;
   grid-template-rows: 4rem 1fr;
-
-  @media screen and (min-width: 64em) {
-    --sidebar-width: 18rem;
-  }
 `;
 
 function AppLayout() {
