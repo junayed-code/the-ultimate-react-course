@@ -14,7 +14,7 @@ import Booking from '@pages/booking';
 import Bookings from '@pages/bookings';
 import Settings from '@pages/settings';
 import Dashboard from '@pages/dashboard';
-import PageNotFound from '@pages/page-not-found';
+import ErrorPage from '@pages/error-page';
 
 import GlobalStyles from '@/styles/global';
 import AppLayout from '@components/layout/app';
@@ -24,7 +24,7 @@ import { ThemeProvider } from '@features/theme';
 const router = createBrowserRouter([
   {
     element: <Protected protect="authenticated" />,
-    errorElement: <PageNotFound />,
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <AppLayout />,
@@ -44,6 +44,7 @@ const router = createBrowserRouter([
   },
   {
     element: <Protected protect="unauthenticated" />,
+    errorElement: <ErrorPage />,
     children: [{ path: '/login', element: <Login /> }],
   },
 ]);
