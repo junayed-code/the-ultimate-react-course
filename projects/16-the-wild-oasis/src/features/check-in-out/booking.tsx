@@ -103,7 +103,7 @@ function CheckinBooking() {
 
       <Row $justify="end" $gap="0.75rem">
         <Button disabled={isCheckinBtnDisabled} onClick={handleCheckin}>
-          Check in booking #{id}
+          {isChecking && <Spinner $size="sm" />} Check in booking #{id}
         </Button>
         <Button $variant="secondary" onClick={moveBack}>
           Back

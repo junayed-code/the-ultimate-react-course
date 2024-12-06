@@ -5,6 +5,7 @@ import Row from '@ui/row';
 import Modal from '@ui/modal';
 import Button from '@ui/button';
 import Heading from '@ui/heading';
+import Spinner from '@ui/spinner';
 import CabinForm from '@components/cabin-form';
 import { CreateCabinSchema } from '@/schemas';
 import { createCabin, CabinInsert } from '@services/api/cabins';
@@ -52,7 +53,7 @@ function CreateCabinFormModal() {
                   Clear
                 </Button>
                 <Button type="submit" disabled={isMutating}>
-                  Create Cabin
+                  {isMutating && <Spinner $size="sm" />} Create Cabin
                 </Button>
               </Row>
             </CabinForm>

@@ -8,6 +8,7 @@ import Menu from '@ui/menu';
 import Modal from '@ui/modal';
 import Button from '@ui/button';
 import Heading from '@ui/heading';
+import Spinner from '@ui/spinner';
 import CabinForm from '@components/cabin-form';
 import { UpdateCabinSchema } from '@/schemas';
 import { updateCabin } from '@/services/api/cabins';
@@ -57,7 +58,7 @@ function UpdateCabinFormModal({ cabin, onUpdate }: CabinUpdateFormModalProps) {
             >
               <Row $direction="horizontal" $justify="end">
                 <Button type="submit" disabled={isMutating}>
-                  Update Cabin
+                  {isMutating && <Spinner $size="sm" />} Update Cabin
                 </Button>
               </Row>
             </StyledCabinForm>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Button from '@ui/button';
 import Heading from '@ui/heading';
+import Spinner from '@ui/spinner';
 import Modal, { type ModalContextValue } from '@ui/modal';
 
 const ModalButton = styled(Button)`
@@ -51,7 +52,7 @@ function ConfirmDeleteModal(props: ConfirmDeleteModalProps) {
                 disabled={isDeleting}
                 onClick={onConfirm.bind(void 0, modal)}
               >
-                {isDeleting ? 'Deleting...' : 'Delete'}
+                {isDeleting && <Spinner $size="sm" />} Delete
               </ModalButton>
             </Modal.Action>
           </Modal.Box>

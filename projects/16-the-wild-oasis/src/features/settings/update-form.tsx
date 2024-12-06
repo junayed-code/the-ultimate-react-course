@@ -98,9 +98,12 @@ const UpdateSettingsSubmitButton = ({
   );
 
   return (
-    <Row $align="end">
+    <Row $gap="0.75rem">
+      <Button type="reset" $variant="secondary">
+        Cancel
+      </Button>
       <Button type="submit" disabled={isSubmitting || !isAnyValueChange}>
-        {isSubmitting ? 'Saving...' : 'Save'}
+        {isSubmitting && <Spinner $size="sm" />} Save
       </Button>
     </Row>
   );

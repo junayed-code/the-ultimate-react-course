@@ -77,11 +77,7 @@ function Activity({ id, status, nights, guests }: ActivityProps) {
       {/* Action buttons */}
       {status === 'checked-in' && (
         <Button $size="sm" onClick={handleCheckout} disabled={isCheckingOut}>
-          {isCheckingOut ? (
-            <Spinner $size="sm" $variant="secondary" />
-          ) : (
-            'check out'
-          )}
+          {isCheckingOut ? <Spinner $size="sm" /> : 'check out'}
         </Button>
       )}
       {status === 'unconfirmed' && (

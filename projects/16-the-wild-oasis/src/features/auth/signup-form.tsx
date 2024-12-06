@@ -71,14 +71,7 @@ function SignUpForm() {
             Cancel
           </Button>
           <Button type="submit" disabled={isSigningUp}>
-            {isSigningUp ? (
-              <>
-                Creating...
-                <Spinner $size="sm" $variant="secondary" />
-              </>
-            ) : (
-              'Create new user'
-            )}
+            {isSigningUp && <Spinner $size="sm" />} Create new user
           </Button>
         </Row>
       </StyledForm>
