@@ -66,10 +66,10 @@ const Button = styled.button<VariantProps<typeof buttonVariant>>`
     transform 200ms ease-in-out,
     background-color 300ms ease-in-out;
 
-  &:enabled:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-hover);
   }
-  &:enabled:active {
+  &:not(:disabled):active {
     transform: scale(0.95);
   }
 
