@@ -11,6 +11,7 @@ import { Database } from '@services/supabase/database.types';
 import { bookings } from './data-bookings';
 import { cabins } from './data-cabins';
 import { guests } from './data-guests';
+import Spinner from '../ui/spinner';
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -104,10 +105,14 @@ async function createBookings() {
 }
 
 function Uploader() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [{ isUploadingAll, isUploadingBookings }, setIsLoading] = useState({
+    isUploadingAll: false,
+    isUploadingBookings: false,
+  });
+  const isDisabled = isUploadingAll || isUploadingBookings;
 
   async function uploadAll() {
-    setIsLoading(true);
+    setIsLoading(loadings => ({ ...loadings, isUploadingAll: true }));
     // Bookings need to be deleted FIRST
     await deleteBookings();
     await deleteGuests();
@@ -118,19 +123,26 @@ function Uploader() {
     await createCabins();
     await createBookings();
 
-    // Revalidate the cabins and bookings data
-    mutate('cabins');
-    mutate('bookings');
+    // Revalidate all cached data
+    mutate(() => true);
 
-    setIsLoading(false);
+    setIsLoading(loadings => ({ ...loadings, isUploadingAll: false }));
   }
 
   async function uploadBookings() {
-    setIsLoading(true);
+    setIsLoading(loadings => ({ ...loadings, isUploadingBookings: true }));
     await deleteBookings();
     await createBookings();
-    mutate('bookings');
-    setIsLoading(false);
+    // Revalidate all bookings related cache data
+    mutate(key => {
+      if (typeof key === 'string') {
+        return /bookings?/.test(key);
+      } else if (Array.isArray(key)) {
+        return key.some((k: string) => /bookings?/.test(k));
+      }
+      return false;
+    });
+    setIsLoading(loadings => ({ ...loadings, isUploadingBookings: false }));
   }
 
   return (
@@ -148,12 +160,12 @@ function Uploader() {
     >
       <h4>SAMPLE DATA</h4>
 
-      <Button onClick={uploadAll} disabled={isLoading}>
-        Upload ALL
+      <Button onClick={uploadAll} disabled={isDisabled}>
+        {isUploadingAll ? <Spinner $size="sm" /> : 'Upload ALL'}
       </Button>
 
-      <Button onClick={uploadBookings} disabled={isLoading}>
-        Upload bookings ONLY
+      <Button onClick={uploadBookings} disabled={isDisabled}>
+        {isUploadingBookings ? <Spinner $size="sm" /> : 'Upload bookings ONLY'}
       </Button>
     </div>
   );
