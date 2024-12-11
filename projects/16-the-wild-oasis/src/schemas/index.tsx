@@ -78,6 +78,10 @@ export const UpdateUserSchema = object().shape({
     .max(32, 'Fullname must be at most 32 characters'),
 });
 
+export const SendResetMailFormSchema = object().shape({
+  email: string().email().required('Email is required to send reset mail'),
+});
+
 export const UpdatePasswordFormSchema = object().shape({
   password: PasswordSchema,
   confirmPassword: string()
