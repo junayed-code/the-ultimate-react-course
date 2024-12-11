@@ -77,3 +77,10 @@ export const UpdateUserSchema = object().shape({
     .min(3, 'Fullname must be at least 3 characters')
     .max(32, 'Fullname must be at most 32 characters'),
 });
+
+export const UpdatePasswordFormSchema = object().shape({
+  password: PasswordSchema,
+  confirmPassword: string()
+    .oneOf([ref('password')], 'Must match with password field value above')
+    .required('Confirm password is a required field'),
+});
