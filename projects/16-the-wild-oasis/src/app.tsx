@@ -15,6 +15,8 @@ import Bookings from '@pages/bookings';
 import Settings from '@pages/settings';
 import Dashboard from '@pages/dashboard';
 import ErrorPage from '@pages/error-page';
+import ForgotPassword from '@pages/forgot-password';
+import UpdatePassword from '@pages/update-password';
 
 import GlobalStyles from '@/styles/global';
 import AppLayout from '@components/layout/app';
@@ -40,12 +42,18 @@ const router = createBrowserRouter([
           { path: '/checkin/:id', element: <Checkin /> },
         ],
       },
+      { path: '/update-password', element: <UpdatePassword /> },
     ],
   },
   {
     element: <Protected protect="unauthenticated" />,
     errorElement: <ErrorPage />,
     children: [{ path: '/login', element: <Login /> }],
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
