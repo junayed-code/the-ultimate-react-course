@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { Formik, Form, FormikConfig } from 'formik';
+import { Link } from 'react-router-dom';
+import { Formik, FormikConfig } from 'formik';
 
 import Row from '@ui/row';
 import Input from '@ui/input';
 import Button from '@ui/button';
 import Spinner from '@ui/spinner';
-import { FormField, FormGroup, FormLabel, FormMessage } from '@ui/form';
+import { Form, FormField, FormGroup, FormLabel, FormMessage } from '@ui/form';
 
 import { useLogin } from '@hooks/auth';
 import { LoginSchema } from '@/schemas';
@@ -14,16 +15,23 @@ const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid var(--color-grey-200);
+  & > div:last-child {
+    margin-top: 0.75rem;
+  }
 `;
 
-const SubmitButton = styled(Button).attrs({ type: 'submit' })`
-  &:disabled {
-    opacity: 0.8;
-    color: var(--color-brand-50);
-    background-color: var(--color-brand-500);
+const StyledPasswordLabel = styled(FormLabel)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    font-weight: 400;
+    color: var(--color-grey-600);
+    text-decoration: underline;
   }
 `;
 
@@ -58,15 +66,17 @@ function LoginForm() {
           <FormMessage />
         </FormGroup>
         <FormGroup name="password">
-          <FormLabel>Password</FormLabel>
+          <StyledPasswordLabel>
+            Password <Link to="/forgot-password">Forgot password?</Link>
+          </StyledPasswordLabel>
           <FormField type="password" as={Input} />
           <FormMessage />
         </FormGroup>
         {/* Form submit button */}
         <Row $align="stretch" $direction="vertical">
-          <SubmitButton disabled={isLogin}>
+          <Button disabled={isLogin}>
             {isLogin ? <Spinner $size="sm" /> : 'Login'}
-          </SubmitButton>
+          </Button>
         </Row>
       </StyledForm>
     </Formik>
