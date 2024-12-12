@@ -8,7 +8,12 @@ import { useLocalStorage } from '@hooks/use-local-storage';
 type ThemeProviderProps = { children: ReactNode };
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, changeTheme] = useLocalStorage<Theme>('light', '__theme');
+  const [theme, changeTheme] = useLocalStorage<Theme>(() => {
+    // Get the default color scheme from user's device and use it
+    // as the default theme
+    const { matches } = window.matchMedia('(prefers-color-scheme: dark)');
+    return matches ? 'dark' : 'light';
+  }, '__theme');
 
   useEffect(() => {
     if (theme === 'dark') {
