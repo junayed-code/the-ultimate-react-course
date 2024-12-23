@@ -13,17 +13,13 @@
     "projects/*"
   ],
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
     "@types/node": "^22.3.0",
+    "@ultimate-react/eslint-config": "workspace:^",
     "eslint": "^9.9.0",
-    "eslint-plugin-react": "^7.35.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
-    "globals": "^15.9.0",
+    "next": "^15.1.2",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.1.0"
+    "typescript": "^5.5.4"
   },
   "dependenciesMeta": {
     "prettier-plugin-tailwindcss@0.6.6": {

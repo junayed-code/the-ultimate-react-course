@@ -1,45 +1,39 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
+import eslintConfigBase from "@ultimate-react/eslint-config";
+import eslintConfigNext from "@ultimate-react/eslint-config/next";
+import eslintConfigReact from "@ultimate-react/eslint-config/react";
+import eslintConfigTs from "@ultimate-react/eslint-config/typescript";
 
 /**@type {import("eslint").Linter.Config[]} */
-export default tseslint.config({
-  extends: [pluginJs.configs.recommended, ...tseslint.configs.recommended],
-  files: [`**/*.{js,mjs,cjs,ts,jsx,tsx}`],
-  ignores: [`**/dist/**`, `**/node_modules/**`],
-  languageOptions: {
-    ecmaVersion: 2021,
-    sourceType: "module",
-    globals: { ...globals.browser, ...globals.node },
-  },
-  plugins: {
-    react: pluginReact,
-    "react-hooks": reactHooks,
-    "react-refresh": reactRefresh,
-  },
-  rules: {
-    ...reactHooks.configs.recommended.rules,
-    ...pluginReact.configs.recommended.rules,
-    "no-undef": ["error", { typeof: false }],
-    "react/react-in-jsx-scope": "off",
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        // "args": "all",
-        argsIgnorePattern: "^_",
-        // "caughtErrors": "all",
-        // caughtErrorsIgnorePattern: "^_",
-        // "destructuredArrayIgnorePattern": "^_",
-        varsIgnorePattern: "^_",
-        // "ignoreRestSiblings": true
-      },
+const eslintConfig = [
+  ...eslintConfigBase,
+  ...eslintConfigReact,
+  ...eslintConfigNext,
+  ...eslintConfigTs,
+  {
+    ignores: [
+      `.yarn`,
+      `.pnp.cjs`,
+      `.pnp.loader.mjs`,
+      `**/node_modules/`,
+      `**/.next/`,
+      `**/dist/`,
+      `**/package.json`,
     ],
   },
-});
+  {
+    files: [`**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}`],
+    rules: {
+      "no-console": "warn",
+      "no-import-assign": "error",
+      "no-undef": ["error", { typeof: false }],
+    },
+  },
+  {
+    files: [`projects/18-the-wild-oasis-website/**/*.{js,ts,jsx,tsx}`],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
+];
+
+export default eslintConfig;

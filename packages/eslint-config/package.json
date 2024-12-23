@@ -1,0 +1,40 @@
+{
+  "name": "@ultimate-react/eslint-config",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./react": {
+      "default": "./react.js"
+    },
+    "./next": {
+      "default": "./next.js"
+    },
+    "./typescript": {
+      "default": "./typescript.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.17.0",
+    "@next/eslint-plugin-next": "^15.1.2",
+    "eslint-config-next": "^15.1.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "typescript-eslint": "^8.18.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "packageManager": "yarn@4.5.3"
+}
