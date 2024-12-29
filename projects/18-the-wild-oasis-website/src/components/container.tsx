@@ -3,9 +3,12 @@ import { cn } from "@utils/cn";
 
 type ContainerProps = HTMLAttributes<HTMLDivElement>;
 
-function Container({ children, ...props }: ContainerProps) {
+function Container({ children, className, ...props }: ContainerProps) {
   return (
-    <div {...props} className={cn("w-full max-w-7xl mx-auto", props.className)}>
+    <div
+      {...props}
+      className={cn("w-full max-w-7xl mx-auto py-8 md:py-10", className)}
+    >
       {children}
     </div>
   );
