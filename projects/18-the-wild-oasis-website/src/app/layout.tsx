@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 
-import Header from "@components/header";
-
 const josefinSans = Josefin_Sans({
   subsets: ["latin"],
   display: "swap",
@@ -30,10 +28,7 @@ export default function RootLayout({
       <body
         className={`${josefinSans.variable} font-sans antialiased bg-primary-950 text-primary-100 min-h-dvh flex flex-col`}
       >
-        <Header />
-        <main className="py-8 md:py-10 px-5 md:px-8 flex-1 grid">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

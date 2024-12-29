@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import Container from "@components/container";
 import aboutImg1 from "@images/about-1.jpg";
 import aboutImg2 from "@images/about-2.jpg";
+
+export const metadata: Metadata = { title: `About` };
 
 function AboutPage() {
   return (
