@@ -3,13 +3,13 @@ const config = {
   tabWidth: 2,
   singleQuote: false,
   arrowParens: "avoid",
+  plugins: [require.resolve("prettier-plugin-tailwindcss")],
 
   overrides: [
     {
       files: ["**/projects/15-fast-react-pizza/**"],
       options: {
         singleQuote: true,
-        plugins: [require.resolve("prettier-plugin-tailwindcss")],
       },
     },
     {
