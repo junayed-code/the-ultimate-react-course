@@ -3,17 +3,26 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import Container from "@components/container";
+import { supabase } from "@lib/supabase";
+
 import aboutImg1 from "@images/about-1.jpg";
 import aboutImg2 from "@images/about-2.jpg";
 
 export const metadata: Metadata = { title: `About` };
 
-function AboutPage() {
+// Revalidate the page once every day
+export const revalidate = 86400;
+
+async function AboutPage() {
+  const { count: cabinsCount } = await supabase
+    .from("cabins")
+    .select("*", { head: true, count: "exact" });
+
   return (
     <Container className="space-y-24 md:space-y-32 md:text-lg">
-      <section className="flex flex-col lg:flex-row gap-x-16 gap-y-12">
+      <section className="flex flex-col gap-x-16 gap-y-12 lg:flex-row">
         <div className="basis-1/2 xl:basis-3/5">
-          <h1 className="text-3xl sm:text-4xl mb-8 sm:mb-10 text-accent-400 font-medium">
+          <h1 className="text-accent-400 mb-8 text-3xl font-medium sm:mb-10 sm:text-4xl">
             Welcome to The Wild Oasis
           </h1>
           <p>
@@ -24,10 +33,10 @@ function AboutPage() {
             and enjoying simple pleasures with family.
             <br />
             <br />
-            Our 8 luxury cabins provide a cozy base, but the real freedom and
-            peace you&apos;ll find in the surrounding mountains. Wander through
-            lush forests, breathe in the fresh air, and watch the stars twinkle
-            above from the warmth of a campfire or your hot tub.
+            Our {cabinsCount} luxury cabins provide a cozy base, but the real
+            freedom and peace you&apos;ll find in the surrounding mountains.
+            Wander through lush forests, breathe in the fresh air, and watch the
+            stars twinkle above from the warmth of a campfire or your hot tub.
             <br />
             <br />
             This is where memorable moments are made, surrounded by
@@ -44,9 +53,9 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="flex flex-col lg:flex-row-reverse gap-x-16 gap-y-12">
+      <section className="flex flex-col gap-x-16 gap-y-12 lg:flex-row-reverse">
         <div className="basis-1/2 xl:basis-3/5">
-          <h1 className="text-3xl sm:text-4xl mb-8 sm:mb-10 text-accent-400 font-medium">
+          <h1 className="text-accent-400 mb-8 text-3xl font-medium sm:mb-10 sm:text-4xl">
             Managed by our family since 1962
           </h1>
           <p>
@@ -66,7 +75,7 @@ function AboutPage() {
 
           <Link
             href="/cabins"
-            className="inline-block mt-6 bg-accent-500 px-5 md:px-7 py-3 md:py-4 text-primary-800 sm:text-lg font-semibold hover:bg-accent-600 transition-all"
+            className="bg-accent-500 text-primary-800 hover:bg-accent-600 mt-6 inline-block px-5 py-3 font-semibold transition-all sm:text-lg md:px-7 md:py-4"
           >
             Explore our luxury cabins
           </Link>
