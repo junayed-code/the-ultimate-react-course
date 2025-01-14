@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/node": "^22.3.0",
     "@ultimate-react/eslint-config": "workspace:^",
-    "eslint": "^9.9.0",
+    "eslint": "^9.18.0",
     "next": "^15.1.2",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
