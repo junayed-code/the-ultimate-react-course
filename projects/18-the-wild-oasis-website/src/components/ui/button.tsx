@@ -15,7 +15,7 @@ function Button({ asChild, children, ...props }: ButtonProps) {
     asChild && isValidElement<ButtonProps>(children) ? (
       cloneElement(children, { ...props, className })
     ) : (
-      <button className={className} {...props}>
+      <button {...props} className={className}>
         {children}
       </button>
     );
